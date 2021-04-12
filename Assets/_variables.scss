@@ -1,0 +1,47 @@
+﻿//Eva icons
+$la-font-path: "../lib/line-awesome/dist/line-awesome/fonts";
+
+//Layout sections
+$nav-width: 4em;
+$main-percentage: 100%;
+$sidenav-width: 25em;
+
+//Main section heigh
+$section-height: 100vh;
+
+//Layout colors
+$nav-color: #282828;
+$main-color: black;
+
+//Logo colors
+$logo-primary: #3500D3;
+$logo-secondary: white;
+$logo-thrid: #240090;
+
+//Layout padding
+$layout-padding: 2em;
+
+//Font
+$font-family: 'Poppins', sans-serif;
+$font-color: white;
+
+//Hero
+$hero-font-size: 4em;
+
+//Nav
+$nav-icons-font-size: 2em;
+$nav-icons-color: $logo-secondary;
+$sidenav-icon: $logo-secondary;
+$nav-btn-back-color: $logo-primary;
+$nav-btn-border-color: $logo-secondary;
+$tooltips-back-color: $logo-primary;
+$tooltips-text-color: white;
+
+//Sidenav
+$sidenav-first-slide: $logo-primary;
+$sidenav-second-slide: $logo-thrid;
+$sidenav-font-color: $logo-secondary;
+$sidenav-hover-font-color: #1A0061;
+
+//Easings
+$main-easing: cubic-bezier(.25,.8,.25,1);

@@ -1,0 +1,16 @@
+﻿@if (Size == "big")
+{
+    <a class="logo logo--big" href="/">
+        <span>HMZ</span>
+    </a>
+}
+else
+{
+    <a class="logo logo--small" href="/">
+        <span>HMZ</span>
+    </a>
+}
+
+@code {
+    [Parameter] public string Size { get; set; }
+} 

@@ -1,0 +1,32 @@
+﻿<section class="section">
+    <div class="container container--column">
+        <Logo Size="big"></Logo>
+        <div class="hero">
+            <h1 class="hero-text">
+                @*<span id="s1">Hamzi Alsheikh</span>
+                <span id="s2">Software Developer</span>
+                <span id="s3">Mechatronics Engineer</span>*@
+            </h1>
+            <div class="hero-img"></div>
+        </div>
+    </div>
+</section>
+
+@code {
+    [Inject] IJSRuntime JSRuntime { get; set; }
+    IJSObjectReference AnimeJsModule;
+
+    protected async override Task OnInitializedAsync()
+    {
+        AnimeJsModule = await JSRuntime.InvokeAsync<IJSObjectReference>(
+                "import", "./js/modules/animejsModule.js");
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            await AnimeJsModule.InvokeVoidAsync("InitAnimeJs");
+        }
+    }
+}

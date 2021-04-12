@@ -1,0 +1,33 @@
+﻿.hero {
+    display: flex;
+    justify-content: center;
+    height: $section-height;
+    padding: $layout-padding;
+    position: relative;
+
+    .hero-text {
+        margin: auto 0;
+        font-size: $hero-font-size;
+
+        #s1, #s2, #s3 {
+            display: block;
+
+            &:not(:last-child) {
+                margin-bottom: .2em;
+            }
+
+            .letter {
+                font-size: 1.2em;
+                font-weight: bold;
+                display: inline-block;
+                margin-right: .1em;
+            }
+        }
+    }
+
+    .hero-img {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+}

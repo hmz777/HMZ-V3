@@ -1,0 +1,101 @@
+﻿.logo {
+    display: block;
+    position: absolute;
+    top: 1em;
+    z-index: 1;
+    left: $layout-padding;
+    background: $logo-primary;
+    color: $logo-secondary;
+    padding: .5em 2em;
+    -webkit-box-shadow: 10px 10px 0px 0px rgba($logo-thrid,1);
+    -moz-box-shadow: 10px 10px 0px 0px rgba($logo-thrid,1);
+    box-shadow: 10px 10px 0px 0px rgba($logo-thrid,1);
+
+    &--big {
+        span {
+            font-weight: bold;
+            font-size: 2em;
+        }
+    }
+
+    &--small {
+        span {
+            font-weight: bold;
+            font-size: 1em;
+        }
+    }
+
+    span {
+        transition: letter-spacing .5s $main-easing;
+
+        &:hover {
+            letter-spacing: 2px;
+        }
+    }
+}
+
+.toggler-button {
+    position: relative;
+
+    &.nav-clicked {
+        .toggler-icon {
+
+            .toggler-icon--inner {
+                background: transparent;
+
+                &:before {
+                    top: 0;
+                    transform: rotate(45deg);
+                }
+
+                &:after {
+                    bottom: 0;
+                    transform: rotate(135deg);
+                }
+            }
+        }
+    }
+
+    .toggler-icon {
+        position: relative;
+        left: 4px;
+        margin: auto;
+        height: $nav-icons-font-size + 0.5;
+        width: $nav-icons-font-size;
+
+        .toggler-icon--inner {
+            position: absolute;
+            height: .2em;
+            width: 100%;
+            border-radius: .2em;
+            background: $sidenav-icon;
+            top: 50%;
+            margin-top: -.1em;
+            transition: transform .2s ease-in-out, opacity .2s ease-in-out, background .2s ease-in-out;
+
+            &:before {
+                display: block;
+                content: "";
+                position: inherit;
+                top: -.65em;
+                height: inherit;
+                width: inherit;
+                border-radius: inherit;
+                background: $sidenav-icon;
+                transition: transform .2s ease-in-out, top .2s ease-in-out;
+            }
+
+            &:after {
+                display: block;
+                content: "";
+                position: inherit;
+                bottom: -.65em;
+                height: inherit;
+                width: inherit;
+                border-radius: inherit;
+                background: $sidenav-icon;
+                transition: transform .2s ease-in-out, bottom .2s ease-in-out;
+            }
+        }
+    }
+}

@@ -1,0 +1,146 @@
+﻿#sidenav {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 2;
+    height: 100%;
+    background: $sidenav-first-slide;
+    width: $sidenav-width;
+    transition: transform .7s $main-easing;
+    transform: translateX(-$sidenav-width);
+    padding-right: 1em;
+    -webkit-box-shadow: 2px 0px 10px -3px rgba(0,0,0,0.65);
+    -moz-box-shadow: 2px 0px 10px -3px rgba(0,0,0,0.65);
+    box-shadow: 2px 0px 10px -3px rgba(0,0,0,0.65);
+
+    &.is-open {
+        transform: translateX(0);
+
+        .sidenav-inner-slide {
+            transform: translateX(0);
+        }
+    }
+
+    .sidenav-inner-slide {
+        background: $sidenav-second-slide;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        top: 0;
+        left: 0;
+        transition: transform .7s $main-easing .2s;
+        transform: translateX(-100%);
+        -webkit-box-shadow: 2px 0px 10px -3px rgba(0,0,0,0.65);
+        -moz-box-shadow: 2px 0px 10px -3px rgba(0,0,0,0.65);
+        box-shadow: 2px 0px 10px -3px rgba(0,0,0,0.65);
+
+        .sidenav-inner-slide--inner {
+            margin: 0 auto;
+            padding: 5em 0;
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+
+            .sidenav-upper {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 1.5em;
+
+                .menu-close {
+                    position: absolute;
+                    background: none;
+                    top: .5em;
+                    right: 1em;
+                }
+
+                .logo {
+                    position: static;
+                    -webkit-box-shadow: 10px 10px 0px 0px rgba($main-color,1);
+                    -moz-box-shadow: 10px 10px 0px 0px rgba($main-color,1);
+                    box-shadow: 10px 10px 0px 0px rgba($main-color,1);
+
+                    span {
+                        font-size: 1.5em;
+                    }
+                }
+            }
+
+            ul {
+                list-style: none;
+                margin: auto;
+                padding: 0;
+                text-align: left;
+            }
+
+            .links {
+                ul {
+                    padding: 1em;
+                }
+
+                li {
+                    &:not(:last-child) {
+                        margin-bottom: 1em;
+                    }
+
+                    a {
+                        display: block;
+                        position: relative;
+                        padding: .5em 1em;
+                        color: $sidenav-font-color;
+                        transition: background .3s $main-easing, transform .3s $main-easing, opacity .5s $main-easing;
+                        border-top-right-radius: .5em;
+                        border-bottom-right-radius: .5em;
+                        font-size: 1.1em;
+
+                        &:hover {
+                            background: white;
+                            transform: translateX(.5em);
+                            color: $sidenav-hover-font-color;
+
+                            &:before {
+                                opacity: 1;
+                            }
+                        }
+
+                        &:before {
+                            @extend .las;
+                            position: relative;
+                            content: la-content($la-chevron-right);
+                            color: $nav-color;
+                            opacity: 0;
+                            margin-right: .2em;
+                        }
+                    }
+                }
+            }
+
+            .sidenav-info {
+                margin-top: auto;
+                text-align: center;
+
+                li {
+                    display: inline;
+
+                    &:not(:last-child) {
+                        margin-right: .5em;
+                    }
+
+                    a {
+                        color: white;
+                        font-size: 1.5em;
+                    }
+                }
+
+                p {
+                    font-size: 1em;
+                    color: white;
+                }
+            }
+        }
+    }
+}

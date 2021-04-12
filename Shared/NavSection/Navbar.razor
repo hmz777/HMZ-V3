@@ -1,0 +1,75 @@
+﻿<nav id="navbar" class="@NavState">
+    <ul class="nav-items" role="list">
+        <li>
+            <a class="nav-item" href="#">
+                <i class="las la-star"></i>
+                <div class="nav-label">
+                    <span>Tech & Skills</span>
+                </div>
+            </a>
+        </li>
+        <li>
+            <a class="nav-item" href="#">
+                <i class="las la-server"></i>
+                <div class="nav-label">
+                    <span>Work</span>
+                </div>
+            </a>
+        </li>
+        <li>
+            <button id="navBtn" type="button" @onclick="NavToggle" class="toggler-button menu-trigger @ButtonState" disabled="@ButtonDisableState" href="#">
+                <div class="toggler-icon">
+                    <div class="toggler-icon--inner"></div>
+                </div>
+            </button>
+        </li>
+        <li>
+            <a class="nav-item" href="#">
+                <i class="las la-info-circle"></i>
+                <div class="nav-label">
+                    <span>About Me</span>
+                </div>
+            </a>
+        </li>
+        <li>
+            <a class="nav-item" href="#">
+                <i class="las la-comment"></i>
+                <div class="nav-label">
+                    <span>Contact</span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</nav>
+<SideNav @ref="SideNav" NavbarAdvance="NavbarAdvance" NavbarRetract="NavbarRetract"></SideNav>
+
+@code {
+    SideNav SideNav;
+    string ButtonState = "";
+    bool ButtonDisableState = false;
+    string NavState = "";
+
+    private void NavToggle()
+    {
+        if (ButtonState == "")
+        {
+            NavbarRetract();
+            SideNav.OpenMenu();
+            StateHasChanged();
+        }
+    }
+
+    private void NavbarRetract()
+    {
+        ButtonState = "nav-clicked";
+        NavState = "is-open";
+        ButtonDisableState = true;
+    }
+
+    private void NavbarAdvance()
+    {
+        ButtonState = "";
+        NavState = "";
+        ButtonDisableState = false;
+    }
+}

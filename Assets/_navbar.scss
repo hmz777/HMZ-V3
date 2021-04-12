@@ -1,0 +1,112 @@
+﻿#navbar {
+    position: fixed;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100%;
+    width: $nav-width;
+    background: $nav-color;
+    display: flex;
+    flex-flow: column;
+    transition: transform .7s $main-easing;
+    box-shadow: 3px 0 5px 2px rgba(0,0,0, 0.1);
+    border-right: 2px solid white;
+
+    &.is-open {
+        transform: translateX(-100%);
+    }
+
+    .nav-items {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        margin: auto 0;
+
+        li {
+
+            &:not(:last-child) {
+                margin-bottom: 1.3em;
+            }
+
+            .menu-trigger {
+                left: .2em;
+
+                &:before {
+                    position: absolute;
+                    content: "";
+                    top: 0;
+                    left: 0;
+                    bottom: 0;
+                    width: inherit;
+                    height: inherit;
+                    border-top: 2px solid $nav-btn-border-color;
+                    border-left: 2px solid $nav-btn-border-color;
+                    border-bottom: 2px solid $nav-btn-border-color;
+                    border-right: 4px solid $nav-btn-border-color;
+                    background: $nav-btn-back-color;
+                    border-radius: .5em;
+                    box-shadow: 10px 0 5px -5px rgba(0,0,0, 0.1);
+                }
+            }
+
+            a, button {
+                display: block;
+                text-align: center;
+                width: 100%;
+                padding: .7em 0;
+                border: none;
+                background: $nav-color;
+
+                .las {
+                    color: $nav-icons-color;
+                    font-size: 2em;
+                    position: relative;
+                    z-index: 2;
+                }
+
+                &.nav-item {
+                    position: relative;
+
+                    .nav-label {
+                        position: absolute;
+                        top: 50%;
+                        left: 0;
+                        transform: translateY(-50%);
+                        transition: background .5s $main-easing, width .5s $main-easing;
+                        text-align: right;
+                        width: 2.8em;
+                        height: 2.8em;
+                        padding: 0 .7em;
+                        z-index: 1;
+                        overflow: hidden;
+                        background: transparent;
+                        border-radius: 1.3em;
+
+                        span {
+                            line-height: 2.8em;
+                            color: $tooltips-text-color;
+                            opacity: 0;
+                        }
+
+                        .las {
+                            margin-left: auto;
+                        }
+                    }
+
+                    &:hover {
+                        .nav-label {
+                            width: 12em;
+                            background: $tooltips-back-color;
+
+                            span {
+                                transition: opacity .5s $main-easing .2s;
+                                opacity: 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

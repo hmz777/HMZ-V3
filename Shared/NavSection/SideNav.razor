@@ -1,0 +1,104 @@
+﻿@implements IDisposable
+
+<div id="sidenav" class="@State" role="menu">
+    <div class="sidenav-inner-slide">
+        <div class="sidenav-inner-slide--inner">
+            <div class="sidenav-upper">
+                <Logo></Logo>
+                <button type="button" @onclick="CloseMenu" class="toggler-button menu-close nav-clicked" href="#">
+                    <div class="toggler-icon">
+                        <div class="toggler-icon--inner"></div>
+                    </div>
+                </button>
+            </div>
+            <nav class="links">
+                <ul role="list">
+                    <li><a href="/search">Search</a></li>
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="/site">Site</a></li>
+                    <li><a href="/site">Privacy Policy</a></li>
+                </ul>
+            </nav>
+            <div class="sidenav-info">
+                <ul role="list">
+                    <li><a href="https://stackoverflow.com/users/6843077/hmz"><i class="lab la-stack-overflow"></i></a></li>
+                    <li><a href="https://github.com/hmz777"><i class="lab la-github"></i></a></li>
+                    <li><a href="https://www.linkedin.com/in/hamzialsheikh/"><i class="lab la-linkedin"></i></a></li>
+                    <li><a href="https://www.facebook.com/Hamzi.Alsheikh/"><i class="lab la-facebook"></i></a></li>
+                    <li><a href="https://www.instagram.com/hamzi_alsheikh/"><i class="lab la-instagram"></i></a></li>
+                    <li><a href="mailto:hamzi_alsheikh@hotmail.com"><i class="las la-envelope"></i></a></li>
+                </ul>
+                <p>
+                    © HAMZI ALSHEIKH @DateTime.Today.Year.<br />
+                    ALL RIGHTS RESERVED.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public EventCallback NavbarAdvance { get; set; }
+    [Parameter] public EventCallback NavbarRetract { get; set; }
+    [Inject] IJSRuntime JSRuntime { get; set; }
+    IJSObjectReference NavbarModule;
+    DotNetObjectReference<SideNav> SidenavRef;
+    string State = "";
+
+    protected async override Task OnInitializedAsync()
+    {
+        NavbarModule = await JSRuntime.InvokeAsync<IJSObjectReference>(
+                "import", "./js/modules/navModule.js");
+
+        SidenavRef = DotNetObjectReference.Create(this);
+
+        await NavbarModule.InvokeVoidAsync("PassSideNavRef", SidenavRef);
+        await NavbarModule.InvokeVoidAsync("InitNavbarEventListeners");
+    }
+
+    [JSInvokable]
+    public async Task CloseMenu()
+    {
+        if (IsMenuOpen())
+        {
+            State = "";
+
+            await NavbarAdvance.InvokeAsync();
+
+            StateHasChanged();
+        }
+    }
+
+    public void OpenMenu()
+    {
+        if (!IsMenuOpen())
+        {
+            State = "is-open";
+
+            StateHasChanged();
+        }
+    }
+
+    [JSInvokable]
+    public bool IsMenuOpen()
+    {
+        return State == "is-open";
+    }
+
+    [JSInvokable]
+    public async Task RetractNavbar()
+    {
+        await RetractNavbar();
+    }
+
+    [JSInvokable]
+    public async Task AdvanceNavbar()
+    {
+        await AdvanceNavbar();
+    }
+
+    public void Dispose()
+    {
+        SidenavRef?.Dispose();
+    }
+}
