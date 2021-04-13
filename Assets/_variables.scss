@@ -9,35 +9,39 @@ $sidenav-width: 25em;
 //Main section heigh
 $section-height: 100vh;
 
-//Layout colors
-$nav-color: #282828;
-$main-color: black;
-
 //Logo colors
 $logo-primary: #3500D3;
 $logo-secondary: white;
 $logo-thrid: #240090;
+
+//Layout colors
+$nav-color: #1A0061;
+$main-color: black;
 
 //Layout padding
 $layout-padding: 2em;
 
 //Font
 $font-family: 'Poppins', sans-serif;
-$font-color: white;
+$font-color: $logo-secondary;
 
 //Hero
 $hero-font-size: 4em;
+$hero-card-dark: $logo-primary;
+$hero-card-light: $logo-secondary;
+$top-slide-space: 20%;
+$left-slide-space: 2em;
 
 //Nav
 $nav-icons-font-size: 2em;
 $nav-icons-color: $logo-secondary;
-$sidenav-icon: $logo-secondary;
 $nav-btn-back-color: $logo-primary;
 $nav-btn-border-color: $logo-secondary;
 $tooltips-back-color: $logo-primary;
-$tooltips-text-color: white;
+$tooltips-text-color: $logo-secondary;
 
 //Sidenav
+$sidenav-icon: $logo-secondary;
 $sidenav-first-slide: $logo-primary;
 $sidenav-second-slide: $logo-thrid;
 $sidenav-font-color: $logo-secondary;

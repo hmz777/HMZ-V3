@@ -5,29 +5,79 @@
     padding: $layout-padding;
     position: relative;
 
-    .hero-text {
+    .hero-intro {
         margin: auto 0;
-        font-size: $hero-font-size;
+        font-weight: bold;
+    }
 
-        #s1, #s2, #s3 {
-            display: block;
+    .hero-list {
+        position: absolute;
+        top: 1em;
+        right: 1em;
+        display: flex;
+        flex-flow: column;
 
-            &:not(:last-child) {
-                margin-bottom: .2em;
-            }
-
-            .letter {
-                font-size: 1.2em;
-                font-weight: bold;
-                display: inline-block;
-                margin-right: .1em;
-            }
+        .hero-card {
+            position: relative;
+            width: 2em;
+            height: 2em;
+            margin-bottom: 2em;
+            animation: RippleEffect 1.5s $main-easing infinite;
         }
     }
 
-    .hero-img {
+    .hero-card {
+        padding: 2em;
         position: absolute;
-        right: 0;
-        top: 0;
+        //width: auto;
+        //height: 15em;
+        width: 2em;
+        height: 2em;
+        opacity: 0;
+        border-radius: 50%;
+        overflow: hidden;
+
+        .text {
+            font-size: $hero-font-size;
+            position: relative;
+            bottom: -65%;
+            opacity: 0;
+        }
+
+        &--dark {
+            background: $hero-card-dark;
+            color: white;
+
+            .las {
+                color: white;
+            }
+        }
+
+        &--light {
+            background: $hero-card-light;
+            color: black;
+
+            .las {
+                color: black;
+            }
+        }
+
+        &.z-1 {
+            z-index: 1;
+            top: $top-slide-space + 30;
+            left: $left-slide-space + 4;
+        }
+
+        &.z-2 {
+            z-index: 2;
+            top: $top-slide-space + 15;
+            left: $left-slide-space + 2;
+        }
+
+        &.z-3 {
+            z-index: 3;
+            top: $top-slide-space;
+            left: $left-slide-space;
+        }
     }
 }
