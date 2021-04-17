@@ -1,1 +1,34 @@
-﻿
+﻿#skills {
+    #skills-modal {
+
+        #skills-header {
+        }
+
+        #skills-body {
+
+            .skill-list {
+                width: 49%;
+
+                .skill-list-title {
+                    font-weight: bold;
+                    color: $logo-primary;
+                }
+
+                .skill-list-body {
+                    .skill-item {
+                        &:before {
+                            @extend .las;
+                            content: la-content($la-angle-double-right);
+                            color: $logo-primary;
+                            margin-right: .5em;
+                        }
+                    }
+
+                    div:nth-child(2) {
+                        margin-left: 1em;
+                    }
+                }
+            }
+        }
+    }
+}

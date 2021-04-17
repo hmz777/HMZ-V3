@@ -99,3 +99,73 @@
         }
     }
 }
+
+.modal {
+    display: flex;
+    flex-flow: column wrap;
+
+    &-dark {
+        .modal-header {
+            background: white;
+
+            h2 {
+                color: $logo-primary !important;
+            }
+        }
+    }
+
+    &-light {
+        .modal-header {
+            background: $logo-primary;
+
+            h2 {
+                color: white !important;
+            }
+        }
+    }
+
+    .modal-header {
+        position: relative;
+        align-self: flex-start;
+        padding: 1em 4em 1em;
+        transform: skewX(-20deg);
+        left: -1.5em;
+        border-bottom-right-radius: 1em;
+        margin-bottom: .5em;
+
+        .modal-header-inner {
+            display: inline-flex;
+            flex-flow: row;
+            align-items: center;
+            transform: skewX(20deg);
+
+            button {
+                margin-right: 2em;
+                border-radius: 50%;
+                width: 3em;
+                height: 3em;
+
+                &:before {
+                    @extend .las;
+                    content: la-content($la-arrow-left);
+                    color: $logo-primary !important;
+                }
+            }
+
+            h2 {
+                color: $logo-primary;
+                font-size: 3em;
+                margin: 0;
+            }
+        }
+    }
+
+    .modal-body {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+        padding: 1em 2em;
+        overflow-y: auto;
+        max-height: 28em;
+    }
+}

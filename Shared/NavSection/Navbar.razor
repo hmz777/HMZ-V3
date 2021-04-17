@@ -1,7 +1,9 @@
-﻿<nav id="navbar" class="@NavState">
+﻿@implements IAsyncDisposable
+
+<nav id="navbar" class="@NavState">
     <ul class="nav-items" role="list">
         <li>
-            <button class="nav-item" type="button">
+            <button class="nav-item" type="button" id="skills-btn" @onclick="SkillsTrigger">
                 <i class="las la-star"></i>
                 <div class="nav-label">
                     <span>Tech & Skills</span>
@@ -9,7 +11,7 @@
             </button>
         </li>
         <li>
-            <button class="nav-item" type="button">
+            <button class="nav-item" type="button" id="work-btn" @onclick="WorkTrigger">
                 <i class="las la-server"></i>
                 <div class="nav-label">
                     <span>Work</span>
@@ -24,7 +26,7 @@
             </button>
         </li>
         <li>
-            <button class="nav-item" type="button">
+            <button class="nav-item" type="button" id="about-btn" @onclick="AboutTrigger">
                 <i class="las la-info-circle"></i>
                 <div class="nav-label">
                     <span>About Me</span>
@@ -32,7 +34,7 @@
             </button>
         </li>
         <li>
-            <button class="nav-item" type="button">
+            <button class="nav-item" type="button" id="contact-btn" @onclick="ContactTrigger">
                 <i class="las la-comment"></i>
                 <div class="nav-label">
                     <span>Contact</span>
@@ -44,10 +46,20 @@
 <SideNav @ref="SideNav" NavbarAdvance="NavbarAdvance" NavbarRetract="NavbarRetract"></SideNav>
 
 @code {
+    [Inject] IJSRuntime JSRuntime { get; set; }
+
+    IJSObjectReference AnimeJsModule;
+
     SideNav SideNav;
     string ButtonState = "";
     bool ButtonDisableState = false;
     string NavState = "";
+
+    protected async override Task OnInitializedAsync()
+    {
+        AnimeJsModule = await JSRuntime.InvokeAsync<IJSObjectReference>(
+                "import", "./js/modules/animejsModule.js");
+    }
 
     private void NavToggle()
     {
@@ -71,5 +83,30 @@
         ButtonState = "";
         NavState = "";
         ButtonDisableState = false;
+    }
+
+    private async Task SkillsTrigger()
+    {
+        await AnimeJsModule.InvokeVoidAsync("PageTransition", "skills");
+    }
+
+    private async Task WorkTrigger()
+    {
+        await AnimeJsModule.InvokeVoidAsync("PageTransition", "work");
+    }
+
+    private async Task AboutTrigger()
+    {
+        await AnimeJsModule.InvokeVoidAsync("PageTransition", "about");
+    }
+
+    private async Task ContactTrigger()
+    {
+        await AnimeJsModule.InvokeVoidAsync("PageTransition", "contact");
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await AnimeJsModule.DisposeAsync();
     }
 }

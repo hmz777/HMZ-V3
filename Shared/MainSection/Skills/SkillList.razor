@@ -1,0 +1,46 @@
+﻿@implements IAsyncDisposable
+@using HMZ_V3.Models.Skills
+
+<div class="skill-list">
+    <h3 class="skill-list-title">@SkillListModel.Title</h3>
+    <div class="skill-list-body">
+        <div id="@ListId">
+            <p>
+                @foreach (var Skill in SkillListModel.Skills)
+                {
+                    <span class="skill-item">@Skill</span><br />
+                }
+            </p>
+        </div>
+        <div id="@(ListId + "-typed")">
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string ListId { get; set; }
+    [Parameter] public SkillListModel SkillListModel { get; set; }
+
+    [Inject] IJSRuntime JSRuntime { get; set; }
+
+    IJSObjectReference TypedJsModule;
+
+    protected async override Task OnInitializedAsync()
+    {
+        TypedJsModule = await JSRuntime
+           .InvokeAsync<IJSObjectReference>("import", "./js/modules/typedjsModule.js");
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            await TypedJsModule.InvokeVoidAsync("StartTypedEffect", ListId, $"{ListId}-typed");
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await TypedJsModule.DisposeAsync();
+    }
+}

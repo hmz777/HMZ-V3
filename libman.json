@@ -1583,6 +1583,13 @@
         "dist/line-awesome/scss/_stacked.scss",
         "dist/line-awesome/scss/_variables.scss"
       ]
+    },
+    {
+      "library": "typed.js@latest",
+      "destination": "wwwroot/lib/typed.js/",
+      "files": [
+        "lib/typed.min.js"
+      ]
     }
   ]
 }

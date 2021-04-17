@@ -15,7 +15,7 @@ $logo-secondary: white;
 $logo-thrid: #240090;
 
 //Layout colors
-$nav-color: #1A0061;
+$nav-color: #190061;
 $main-color: black;
 
 //Layout padding
@@ -45,7 +45,7 @@ $sidenav-icon: $logo-secondary;
 $sidenav-first-slide: $logo-primary;
 $sidenav-second-slide: $logo-thrid;
 $sidenav-font-color: $logo-secondary;
-$sidenav-hover-font-color: #1A0061;
+$sidenav-hover-font-color: $nav-color;
 
 //Easings
 $main-easing: cubic-bezier(.25,.8,.25,1);

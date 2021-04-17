@@ -1,4 +1,6 @@
-﻿<section class="section">
+﻿@implements IAsyncDisposable
+
+<section class="section">
     <div class="container container--column">
         <Logo Size="big"></Logo>
         <div class="hero">
@@ -14,13 +16,17 @@
                 </div>
             </div>
             <div class="hero-list">
-                <div class="hero-card hero-card--light hero-nav-item">
+                <div class="hero-card hero-card--light hero-nav-item ripple-animation" id="skills">
+                    <SkillsSection></SkillsSection>
                 </div>
-                <div class="hero-card hero-card--dark hero-nav-item">
+                <div class="hero-card hero-card--dark hero-nav-item ripple-animation" id="work">
+                    <WorkSection></WorkSection>
                 </div>
-                <div class="hero-card hero-card--light">
+                <div class="hero-card hero-card--light hero-nav-item ripple-animation" id="about">
+                    <About></About>
                 </div>
-                <div class="hero-card hero-card--dark hero-nav-item">
+                <div class="hero-card hero-card--dark hero-nav-item ripple-animation" id="contact">
+                    <Contact></Contact>
                 </div>
             </div>
         </div>
@@ -41,7 +47,12 @@
     {
         if (!firstRender)
         {
-            await AnimeJsModule.InvokeVoidAsync("InitAnimeJs");
+            await AnimeJsModule.InvokeVoidAsync("PageTransition", "home");
         }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await AnimeJsModule.DisposeAsync();
     }
 }

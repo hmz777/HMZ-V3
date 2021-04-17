@@ -1,4 +1,4 @@
-﻿@implements IDisposable
+﻿@implements IAsyncDisposable
 
 <div id="sidenav" class="@State" role="menu">
     <div class="sidenav-inner-slide">
@@ -97,8 +97,9 @@
         await AdvanceNavbar();
     }
 
-    public void Dispose()
+    public async ValueTask DisposeAsync()
     {
         SidenavRef?.Dispose();
+        await NavbarModule.DisposeAsync();
     }
 }

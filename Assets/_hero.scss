@@ -12,30 +12,50 @@
 
     .hero-list {
         position: absolute;
-        top: 1em;
+        top: 2em;
         right: 1em;
         display: flex;
         flex-flow: column;
+        width: 5em;
 
         .hero-card {
-            position: relative;
+            left: 1em;
             width: 2em;
             height: 2em;
-            margin-bottom: 2em;
-            animation: RippleEffect 1.5s $main-easing infinite;
+            margin-bottom: 2em;            
+
+            &:nth-child(1) {
+                top: 0;
+            }
+
+            &:nth-child(2) {
+                top: 5em;
+            }
+
+            &:nth-child(3) {
+                top: 10em;
+            }
+
+            &:nth-child(4) {
+                top: 15em;
+            }
         }
     }
 
     .hero-card {
         padding: 2em;
         position: absolute;
-        //width: auto;
-        //height: 15em;
         width: 2em;
         height: 2em;
         opacity: 0;
         border-radius: 50%;
         overflow: hidden;
+
+        &.hero-nav-item {
+            width: 3em;
+            height: 3em;
+            padding: 0;
+        }
 
         .text {
             font-size: $hero-font-size;

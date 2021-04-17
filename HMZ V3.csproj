@@ -6,10 +6,12 @@
 
   <ItemGroup>
     <Content Remove="compilerconfig.json" />
+    <Content Remove="wwwroot\js\modules\typedJsModule.js" />
   </ItemGroup>
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\css\styles.min.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\modules\typedJsModule.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +26,7 @@
 
   <ItemGroup>
     <None Include="compilerconfig.json" />
+    <None Include="wwwroot\js\modules\typedjsModule.js" />
   </ItemGroup>
 
 </Project>
