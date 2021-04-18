@@ -1,16 +1,36 @@
-﻿@if (Size == "big")
+﻿@if (Clickable)
 {
-    <a class="logo logo--big" href="/">
-        <span>HMZ</span>
-    </a>
+    @if (Size == "big")
+    {
+        <a @onclick="() => HomeClicked.InvokeAsync()" class="logo logo--big" href="/">
+            <span>HMZ</span>
+        </a>
+    }
+    else
+    {
+        <a @onclick="() => HomeClicked.InvokeAsync()" class="logo logo--small" href="/">
+            <span>HMZ</span>
+        </a>
+    }
 }
 else
 {
-    <a class="logo logo--small" href="/">
-        <span>HMZ</span>
-    </a>
+    @if (Size == "big")
+    {
+        <span class="logo logo--big">
+            <span>HMZ</span>
+        </span>
+    }
+    else
+    {
+        <span class="logo logo--small">
+            <span>HMZ</span>
+        </span>
+    }
 }
 
 @code {
     [Parameter] public string Size { get; set; }
+    [Parameter] public bool Clickable { get; set; }
+    [Parameter] public EventCallback HomeClicked { get; set; }
 } 

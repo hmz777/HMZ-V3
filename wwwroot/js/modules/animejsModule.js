@@ -10,7 +10,7 @@ var aboutTarget = document.getElementById("about");
 var contactTarget = document.getElementById("contact");
 var animeInstances = {};
 
-export function PageTransition(page) {
+export function PageTransition(page, alternative = false) {
 
     if (SamePage(page)) {
         console.log("Same page requested");
@@ -21,7 +21,12 @@ export function PageTransition(page) {
 
     switch (page) {
         case "home": {
-            HomeTrigger();
+            if (alternative) {
+                HomeTrigger('reverse');
+            }
+            else {
+                HomeTrigger();
+            }
             break;
         }
         case "skills": {
@@ -56,7 +61,7 @@ function HideCurrentPage() {
 
     switch (currentPage) {
         case "home": {
-            HideTrigger(homeTargets.first);
+            HomeTrigger();
             break;
         }
         case "skills": {
@@ -107,14 +112,25 @@ function SkillsTrigger(aniDirection = 'normal') {
                 width: 45 + "em",
                 height: 35 + "em",
                 duration: skills.duration
+            },
+            third: {
+                targets: skills.target,
+                translateX: -60 + 'em',
+                translateY: 0 + 'em',
+                borderRadius: 1 + "em",
+                width: 45 + "em",
+                height: 35 + "em",
+                scale: 1,
+                duration: skills.duration,
+                delay: skills.delay
             }
         };
 
         skills.length = Object.keys(StartAnimationObject).length;
 
-        animeInstances.Skills
-            .add(StartAnimationObject.first)
-            .add(StartAnimationObject.second);
+        animeInstances.Skills.add(StartAnimationObject.third);
+        //.add(StartAnimationObject.first)
+        //.add(StartAnimationObject.second)           
     }
 
     if (aniDirection == 'normal') {
@@ -224,63 +240,81 @@ function ContactTrigger() {
         .add(StartAnimationObject.second);
 }
 
-function HomeTrigger() {
+function HomeTrigger(aniDirection = 'normal') {
 
-    let animeTL = anime.timeline({ easing: 'easeOutElastic(1, .5)' });
+    if (animeInstances.Home == null) {
 
-    let StartAnimationObject = {
-        first: {
-            targets: homeTargets.third,
-            translateX: [-700, 0],
-            translateY: [-1000, 0],
-            opacity: [0, 1],
-            scale: 0.6,
-            duration: function () { return anime.random(1200, 1800); },
-            delay: function () { return anime.random(0, 400); }
-        },
-        second: {
-            targets: homeTargets.first,
-            translateX: [-1000, 0],
-            translateY: [-500, 0],
-            opacity: [0, 1],
-            borderRadius: 50 + "%",
-            scale: 0.6,
-            duration: function () { return anime.random(1200, 1800); },
-            delay: function () { return anime.random(0, 400); }
-        },
-        third: {
-            targets: homeTargets.first,
-            borderRadius: 1 + "em",
-            scale: 1,
-            width: function (el, i, l) { if (i == 0) return 36 + "em"; if (i == 1) return 45 + "em"; if (i == 2) return 52 + "em"; },
-            height: 15 + "em",
-            duration: function () { return anime.random(1200, 1800); },
-            delay: function () { return anime.random(0, 400); }
-        },
-        forth: {
-            targets: homeTargets.second,
-            easing: 'linear',
-            opacity: 1
+        animeInstances.Home = anime.timeline({ easing: 'easeOutElastic(1, .5)' });
+
+        let StartAnimationObject = {
+            first: {
+                targets: homeTargets.third,
+                translateX: [-700, 0],
+                translateY: [-1000, 0],
+                opacity: [0, 1],
+                scale: 0.6,
+                duration: function () { return anime.random(1200, 1800); },
+                delay: function () { return anime.random(0, 400); }
+            },
+            second: {
+                targets: homeTargets.first,
+                translateX: [-1000, 0],
+                translateY: [-500, 0],
+                opacity: [0, 1],
+                borderRadius: 50 + "%",
+                scale: 0.6,
+                duration: function () { return anime.random(1200, 1800); },
+                delay: function () { return anime.random(0, 400); }
+            },
+            third: {
+                targets: homeTargets.first,
+                borderRadius: 1 + "em",
+                scale: 1,
+                width: function (el, i, l) { if (i == 0) return 36 + "em"; if (i == 1) return 45 + "em"; if (i == 2) return 52 + "em"; },
+                height: 8 + 'em',//15
+                duration: function () { return anime.random(1200, 1800); },
+                delay: function () { return anime.random(0, 400); }
+            },
+            forth: {
+                targets: homeTargets.second,
+                easing: 'linear',
+                opacity: 1,
+                duration: function () { return anime.random(300, 450); },
+                delay: function (e, i, j) { return (i + 1) * 50; }
+            }
+        };
+
+        animeInstances.Home
+            .add(StartAnimationObject.first)
+            .add(StartAnimationObject.second)
+            .add(StartAnimationObject.third)
+            .add(StartAnimationObject.forth);
+
+        WaitForAnimation((1600 + 250 + 450) * 3);
+    }
+    else {
+        if (animeInstances.HomeReverse == null) {
+            animeInstances.HomeReverse = anime({
+                targets: homeTargets.first,
+                translateX: [0, -1000],
+                easing: 'easeInElastic(1, .5)',
+                duration: function () { return anime.random(1200, 1800); },
+                delay: function (el, i, l) { return anime.random(0, 400); },
+                autoplay: false
+            });
         }
-    };
 
-    animeTL
-        .add(StartAnimationObject.first)
-        .add(StartAnimationObject.second)
-        .add(StartAnimationObject.third)
-        .add(StartAnimationObject.forth);
 
-    WaitForAnimation((1600 + 250) * 3);
-}
+        if (aniDirection == 'normal') {
+            animeInstances.HomeReverse.play();
+        }
+        else {
+            animeInstances.HomeReverse.reverse();
+            animeInstances.HomeReverse.play();
+        }
 
-function HideTrigger(target) {
-    anime({
-        targets: target,
-        translateX: [0, -1000],
-        easing: 'easeInElastic(1, .5)',
-        duration: function () { return anime.random(1200, 1800); },
-        delay: function (el, i, l) { return anime.random(0, 400); },
-    });
+        WaitForAnimation(1800);
+    }
 }
 
 function DisableControls() {

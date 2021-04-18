@@ -2,7 +2,7 @@
 
 <section class="section">
     <div class="container container--column">
-        <Logo Size="big"></Logo>
+        <Logo Size="big" Clickable="true" HomeClicked="TransitionToHome"></Logo>
         <div class="hero">
             <div class="hero-intro">
                 <div class="hero-card hero-card--light z-3">
@@ -37,18 +37,20 @@
     [Inject] IJSRuntime JSRuntime { get; set; }
     IJSObjectReference AnimeJsModule;
 
-    protected async override Task OnInitializedAsync()
-    {
-        AnimeJsModule = await JSRuntime.InvokeAsync<IJSObjectReference>(
-                "import", "./js/modules/animejsModule.js");
-    }
-
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender)
+        if (firstRender)
         {
+            AnimeJsModule = await JSRuntime.InvokeAsync<IJSObjectReference>(
+               "import", "./js/modules/animejsModule.js");
+
             await AnimeJsModule.InvokeVoidAsync("PageTransition", "home");
         }
+    }
+
+    private async Task TransitionToHome()
+    {
+        await AnimeJsModule.InvokeVoidAsync("PageTransition", "home", true);
     }
 
     public async ValueTask DisposeAsync()

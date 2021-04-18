@@ -25,16 +25,13 @@
 
     IJSObjectReference TypedJsModule;
 
-    protected async override Task OnInitializedAsync()
-    {
-        TypedJsModule = await JSRuntime
-           .InvokeAsync<IJSObjectReference>("import", "./js/modules/typedjsModule.js");
-    }
-
     protected async override Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender)
+        if (firstRender)
         {
+            TypedJsModule = await JSRuntime
+                   .InvokeAsync<IJSObjectReference>("import", "./js/modules/typedjsModule.js");
+
             await TypedJsModule.InvokeVoidAsync("StartTypedEffect", ListId, $"{ListId}-typed");
         }
     }

@@ -8,6 +8,10 @@
     .hero-intro {
         margin: auto 0;
         font-weight: bold;
+
+        .hero-card {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+        }
     }
 
     .hero-list {
@@ -22,7 +26,7 @@
             left: 1em;
             width: 2em;
             height: 2em;
-            margin-bottom: 2em;            
+            margin-bottom: 2em;
 
             &:nth-child(1) {
                 top: 0;
@@ -50,6 +54,12 @@
         opacity: 0;
         border-radius: 50%;
         overflow: hidden;
+        display: flex;
+        align-items: center;
+
+        .modal {
+            height: 100%;
+        }
 
         &.hero-nav-item {
             width: 3em;
@@ -60,7 +70,7 @@
         .text {
             font-size: $hero-font-size;
             position: relative;
-            bottom: -65%;
+            //bottom: -65%;
             opacity: 0;
         }
 
@@ -84,13 +94,13 @@
 
         &.z-1 {
             z-index: 1;
-            top: $top-slide-space + 30;
+            top: $top-slide-space + 34;
             left: $left-slide-space + 4;
         }
 
         &.z-2 {
             z-index: 2;
-            top: $top-slide-space + 15;
+            top: $top-slide-space + 17;
             left: $left-slide-space + 2;
         }
 

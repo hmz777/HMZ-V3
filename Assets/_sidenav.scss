@@ -11,9 +11,7 @@
     transition: transform .7s $main-easing;
     transform: translateX(-$sidenav-width);
     padding-right: 1em;
-    -webkit-box-shadow: 2px 0px 10px -3px rgba(0,0,0,0.65);
-    -moz-box-shadow: 2px 0px 10px -3px rgba(0,0,0,0.65);
-    box-shadow: 2px 0px 10px -3px rgba(0,0,0,0.65);
+    box-shadow: 4px 10px 20px rgba(0,0,0,0.19), 4px 6px 6px rgba(0,0,0,0.23);
 
     &.is-open {
         transform: translateX(0);
@@ -32,9 +30,7 @@
         left: 0;
         transition: transform .7s $main-easing .2s;
         transform: translateX(-100%);
-        -webkit-box-shadow: 2px 0px 10px -3px rgba(0,0,0,0.65);
-        -moz-box-shadow: 2px 0px 10px -3px rgba(0,0,0,0.65);
-        box-shadow: 2px 0px 10px -3px rgba(0,0,0,0.65);
+        box-shadow: 4px 10px 20px rgba(0,0,0,0.19), 4px 6px 6px rgba(0,0,0,0.23);
 
         .sidenav-inner-slide--inner {
             margin: 0 auto;
@@ -92,7 +88,7 @@
                         position: relative;
                         padding: .5em 1em;
                         color: $sidenav-font-color;
-                        transition: background .3s $main-easing, transform .3s $main-easing, opacity .5s $main-easing;
+                        transition: background .3s $main-easing, transform .3s $main-easing, opacity .5s $main-easing, box-shadow .5s $main-easing;
                         border-top-right-radius: .5em;
                         border-bottom-right-radius: .5em;
                         font-size: 1.1em;
@@ -101,6 +97,7 @@
                             background: white;
                             transform: translateX(.5em);
                             color: $sidenav-hover-font-color;
+                            box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 
                             &:before {
                                 opacity: 1;
