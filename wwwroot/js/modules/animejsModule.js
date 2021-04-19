@@ -1,19 +1,26 @@
 ﻿var currentPage = "";
-var homeTargets = {
+var home = {
     first: document.querySelectorAll(".hero-intro .hero-card"),
     second: document.querySelectorAll(".hero-intro .hero-card .text"),
-    third: document.querySelectorAll(".hero-list .hero-card")
+    third: document.querySelectorAll(".hero-list .hero-card"),
+    options: {
+        minDuration: 1000,
+        maxDuration: 1200,
+        minDelay: 0,
+        maxDelay: 400,
+        wait: 1500,
+        offset: '-=1200'
+    }
 };
-var skills = { target: document.getElementById("skills"), delay: 1800, duration: 1500, length: 0 };
-var work = { target: document.getElementById("work"), delay: 1800, duration: 1500, length: 0 };
-var aboutTarget = document.getElementById("about");
-var contactTarget = document.getElementById("contact");
+var skills = { target: document.getElementById("skills"), delay: 500, duration: 1500, length: 0 };
+var work = { target: document.getElementById("work"), delay: 500, duration: 1500, length: 0 };
+var about = { target: document.getElementById("about"), delay: 500, duration: 1500, length: 0 };
+var contact = { target: document.getElementById("contact"), delay: 500, duration: 1500, length: 0 };
 var animeInstances = {};
 
 export function PageTransition(page, alternative = false) {
 
     if (SamePage(page)) {
-        console.log("Same page requested");
         return;
     }
 
@@ -49,8 +56,6 @@ export function PageTransition(page, alternative = false) {
     }
 
     currentPage = page;
-
-    console.log("Current page changed:" + currentPage);
 }
 
 function SamePage(requestedPage) {
@@ -73,11 +78,11 @@ function HideCurrentPage() {
             break;
         }
         case "about": {
-            HideTrigger(aboutTarget);
+            AboutTrigger('reverse');
             break;
         }
         case "contact": {
-            HideTrigger(contactTarget);
+            ContactTrigger('reverse');
             break;
         }
         default:
@@ -89,166 +94,14 @@ function WaitForAnimation(time) {
     setTimeout(EnableControls, time);
 }
 
-function SkillsTrigger(aniDirection = 'normal') {
-
-    if (animeInstances.Skills == null) {
-        animeInstances.Skills = anime.timeline({ easing: 'easeInOutElastic(1, .5)', direction: 'normal', autoplay: false });
-
-        let StartAnimationObject = {
-            first: {
-                targets: skills.target,
-                translateX: -60 + 'em',
-                translateY: 0 + 'em',
-                borderRadius: 50 + "%",
-                width: 2 + "em",
-                height: 2 + "em",
-                duration: skills.duration,
-                delay: skills.delay
-            },
-            second: {
-                targets: skills.target,
-                borderRadius: 1 + "em",
-                scale: 1,
-                width: 45 + "em",
-                height: 35 + "em",
-                duration: skills.duration
-            },
-            third: {
-                targets: skills.target,
-                translateX: -60 + 'em',
-                translateY: 0 + 'em',
-                borderRadius: 1 + "em",
-                width: 45 + "em",
-                height: 35 + "em",
-                scale: 1,
-                duration: skills.duration,
-                delay: skills.delay
-            }
-        };
-
-        skills.length = Object.keys(StartAnimationObject).length;
-
-        animeInstances.Skills.add(StartAnimationObject.third);
-        //.add(StartAnimationObject.first)
-        //.add(StartAnimationObject.second)           
-    }
-
-    if (aniDirection == 'normal') {
-        animeInstances.Skills.play();
-    }
-    else {
-        animeInstances.Skills.reverse();
-        animeInstances.Skills.play();
-    }
-
-    WaitForAnimation((skills.duration * skills.length) + skills.delay);
-    ToggleRippleEffectForActiveElement("skills", aniDirection);
-}
-
-function WorkTrigger(aniDirection = 'normal') {
-
-    if (animeInstances.Work == null) {
-        animeInstances.Work = anime.timeline({ easing: 'easeInOutElastic(1, .5)', direction: 'normal', autoplay: false });
-
-        let StartAnimationObject = {
-            first: {
-                targets: work.target,
-                translateX: -60 + 'em',
-                translateY: -5 + 'em',
-                borderRadius: 50 + "%",
-                width: 2 + "em",
-                height: 2 + "em",
-                duration: work.duration,
-                delay: work.delay
-            },
-            second: {
-                targets: work.target,
-                borderRadius: 1 + "em",
-                scale: 1,
-                width: 45 + "em",
-                height: 35 + "em",
-                duration: work.duration
-            }
-        };
-
-        work.length = Object.keys(StartAnimationObject).length;
-
-        animeInstances.Work
-            .add(StartAnimationObject.first)
-            .add(StartAnimationObject.second);
-    }
-
-    if (aniDirection == 'normal') {
-        animeInstances.Work.play();
-    }
-    else {
-        animeInstances.Work.reverse();
-        animeInstances.Work.play();
-    }
-
-    WaitForAnimation((work.duration * work.length) + work.delay);
-    ToggleRippleEffectForActiveElement("work", aniDirection);
-}
-
-function AboutTrigger() {
-    let animeTL = anime.timeline({ easing: 'easeOutElastic(1, .5)' });
-
-    let StartAnimationObject = {
-        first: {
-            targets: aboutTarget,
-            translateX: [0, -64 + 'em'],
-            translateY: [0, -12 + 'em'],
-            duration: function () { return anime.random(1200, 1800); },
-            delay: function (el, i, l) { return anime.random(0, 400); }
-        },
-        second: {
-            targets: aboutTarget,
-            borderRadius: function () { return 1 + "em"; },
-            scale: function (el, i, l) { return 1; },
-            width: function () { return 55 + "em"; },
-            height: function () { return 35 + "em"; },
-        }
-    };
-
-    animeTL
-        .add(StartAnimationObject.first)
-        .add(StartAnimationObject.second);
-}
-
-function ContactTrigger() {
-    let animeTL = anime.timeline({ easing: 'easeOutElastic(1, .5)' });
-
-    let StartAnimationObject = {
-        first: {
-            targets: contactTarget,
-            translateX: [0, -64 + 'em'],
-            translateY: [0, -14 + 'em'],
-            duration: function () { return anime.random(1200, 1800); },
-            delay: function (el, i, l) { return anime.random(0, 400); }
-        },
-        second: {
-            targets: contactTarget,
-            borderRadius: function () { return 1 + "em"; },
-            scale: function (el, i, l) { return 1; },
-            width: function () { return 55 + "em"; },
-            height: function () { return 35 + "em"; },
-        }
-    };
-
-    animeTL
-        .add(StartAnimationObject.first)
-        .add(StartAnimationObject.second);
-}
-
 function HomeTrigger(aniDirection = 'normal') {
 
     if (animeInstances.Home == null) {
-
         animeInstances.Home = anime.timeline({ easing: 'easeOutElastic(1, .5)' });
 
         let StartAnimationObject = {
             first: {
-                targets: homeTargets.third,
+                targets: home.third,
                 translateX: [-700, 0],
                 translateY: [-1000, 0],
                 opacity: [0, 1],
@@ -257,7 +110,7 @@ function HomeTrigger(aniDirection = 'normal') {
                 delay: function () { return anime.random(0, 400); }
             },
             second: {
-                targets: homeTargets.first,
+                targets: home.first,
                 translateX: [-1000, 0],
                 translateY: [-500, 0],
                 opacity: [0, 1],
@@ -267,7 +120,7 @@ function HomeTrigger(aniDirection = 'normal') {
                 delay: function () { return anime.random(0, 400); }
             },
             third: {
-                targets: homeTargets.first,
+                targets: home.first,
                 borderRadius: 1 + "em",
                 scale: 1,
                 width: function (el, i, l) { if (i == 0) return 36 + "em"; if (i == 1) return 45 + "em"; if (i == 2) return 52 + "em"; },
@@ -276,17 +129,17 @@ function HomeTrigger(aniDirection = 'normal') {
                 delay: function () { return anime.random(0, 400); }
             },
             forth: {
-                targets: homeTargets.second,
+                targets: home.second,
                 easing: 'linear',
                 opacity: 1,
                 duration: function () { return anime.random(300, 450); },
-                delay: function (e, i, j) { return (i + 1) * 50; }
+                delay: function (e, i, j) { return (i) * 20; }
             }
         };
 
         animeInstances.Home
             .add(StartAnimationObject.first)
-            .add(StartAnimationObject.second)
+            .add(StartAnimationObject.second, home.options.offset)
             .add(StartAnimationObject.third)
             .add(StartAnimationObject.forth);
 
@@ -295,26 +148,197 @@ function HomeTrigger(aniDirection = 'normal') {
     else {
         if (animeInstances.HomeReverse == null) {
             animeInstances.HomeReverse = anime({
-                targets: homeTargets.first,
+                targets: home.first,
                 translateX: [0, -1000],
                 easing: 'easeInElastic(1, .5)',
-                duration: function () { return anime.random(1200, 1800); },
-                delay: function (el, i, l) { return anime.random(0, 400); },
+                duration: function () { return anime.random(home.options.minDuration, home.options.maxDuration); },
+                delay: function () { return anime.random(home.options.minDelay, home.options.maxDelay); },
                 autoplay: false
             });
         }
 
-
         if (aniDirection == 'normal') {
+            if (animeInstances.HomeReverse.reversed) {
+                animeInstances.HomeReverse.reverse();
+            }
             animeInstances.HomeReverse.play();
         }
         else {
-            animeInstances.HomeReverse.reverse();
+            if (!animeInstances.HomeReverse.reversed) {
+                animeInstances.HomeReverse.reverse();
+            }
             animeInstances.HomeReverse.play();
         }
 
-        WaitForAnimation(1800);
+        WaitForAnimation(home.options.wait);
     }
+}
+
+function SkillsTrigger(aniDirection = 'normal') {
+
+    if (animeInstances.Skills == null) {
+
+        let StartAnimationObject = {
+            first: {
+                targets: skills.target,
+                translateX: -60 + 'em',
+                translateY: 0 + 'em',
+                borderRadius: 1 + "em",
+                width: 45 + "em",
+                height: 35 + "em",
+                scale: 1,
+                duration: skills.duration,
+                delay: skills.delay,
+                autoplay: false,
+                easing: 'easeInOutElastic(1, .5)'
+            }
+        };
+
+        animeInstances.Skills = anime(StartAnimationObject.first);
+
+        skills.length = Object.keys(StartAnimationObject).length;
+    }
+
+    if (aniDirection == 'normal') {
+        if (animeInstances.Skills.reversed) {
+            animeInstances.Skills.reverse();
+        }
+        animeInstances.Skills.play();
+    }
+    else {
+        if (!animeInstances.Skills.reversed) {
+            animeInstances.Skills.reverse();
+        }
+        animeInstances.Skills.play();
+    }
+
+    //WaitForAnimation((skills.duration * skills.length) + skills.delay);
+    ToggleRippleEffectForActiveElement("skills", aniDirection);
+}
+
+function WorkTrigger(aniDirection = 'normal') {
+
+    if (animeInstances.Work == null) {
+
+        let StartAnimationObject = {
+            first: {
+                targets: work.target,
+                translateX: -60 + 'em',
+                translateY: -5 + 'em',
+                borderRadius: 1 + "em",
+                width: 45 + "em",
+                height: 35 + "em",
+                scale: 1,
+                duration: work.duration,
+                delay: work.delay,
+                autoplay: false,
+                easing: 'easeInOutElastic(1, .5)'
+            }
+        };
+
+        animeInstances.Work = anime(StartAnimationObject.first);
+
+        work.length = Object.keys(StartAnimationObject).length;
+    }
+
+    if (aniDirection == 'normal') {
+        if (animeInstances.Work.reversed) {
+            animeInstances.Work.reverse();
+        }
+        animeInstances.Work.play();
+    }
+    else {
+        if (!animeInstances.Work.reversed) {
+            animeInstances.Work.reverse();
+        }
+        animeInstances.Work.play();
+    }
+
+    //WaitForAnimation((work.duration * work.length) + work.delay);
+    ToggleRippleEffectForActiveElement("work", aniDirection);
+}
+
+function AboutTrigger(aniDirection = 'normal') {
+
+    if (animeInstances.About == null) {
+
+        let StartAnimationObject = {
+            first: {
+                targets: about.target,
+                translateX: -60 + 'em',
+                translateY: -10 + 'em',
+                borderRadius: 1 + "em",
+                width: 45 + "em",
+                height: 35 + "em",
+                scale: 1,
+                duration: about.duration,
+                delay: about.delay,
+                autoplay: false,
+                easing: 'easeInOutElastic(1, .5)'
+            }
+        };
+
+        animeInstances.About = anime(StartAnimationObject.first);
+
+        about.length = Object.keys(StartAnimationObject).length;
+    }
+
+    if (aniDirection == 'normal') {
+        if (animeInstances.About.reversed) {
+            animeInstances.About.reverse();
+        }
+        animeInstances.About.play();
+    }
+    else {
+        if (!animeInstances.About.reversed) {
+            animeInstances.About.reverse();
+        }
+        animeInstances.About.play();
+    }
+
+    //WaitForAnimation((about.duration * about.length) + about.delay);
+    ToggleRippleEffectForActiveElement("about", aniDirection);
+}
+
+function ContactTrigger(aniDirection = 'normal') {
+    if (animeInstances.Contact == null) {
+
+        let StartAnimationObject = {
+            first: {
+                targets: contact.target,
+                translateX: -60 + 'em',
+                translateY: -15 + 'em',
+                borderRadius: 1 + "em",
+                width: 45 + "em",
+                height: 35 + "em",
+                scale: 1,
+                duration: contact.duration,
+                delay: contact.delay,
+                autoplay: false,
+                easing: 'easeInOutElastic(1, .5)'
+            }
+        };
+
+        animeInstances.Contact = anime(StartAnimationObject.first);
+
+        contact.length = Object.keys(StartAnimationObject).length;
+    }
+
+    if (aniDirection == 'normal') {
+        if (animeInstances.Contact.reversed) {
+            animeInstances.Contact.reverse();
+        }
+        animeInstances.Contact.play();
+    }
+    else {
+        if (!animeInstances.Contact.reversed) {
+            animeInstances.Contact.reverse();
+        }
+        animeInstances.Contact.play();
+    }
+
+    //WaitForAnimation((contact.duration * contact.length) + contact.delay);
+    ToggleRippleEffectForActiveElement("contact", aniDirection);
 }
 
 function DisableControls() {

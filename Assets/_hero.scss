@@ -8,10 +8,6 @@
     .hero-intro {
         margin: auto 0;
         font-weight: bold;
-
-        .hero-card {
-            box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-        }
     }
 
     .hero-list {
@@ -57,6 +53,10 @@
         display: flex;
         align-items: center;
 
+        &:not(.ripple-animation) {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+        }
+
         .modal {
             height: 100%;
         }
@@ -70,7 +70,6 @@
         .text {
             font-size: $hero-font-size;
             position: relative;
-            //bottom: -65%;
             opacity: 0;
         }
 

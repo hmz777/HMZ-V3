@@ -1,1 +1,13 @@
-﻿
+﻿#contact-form {
+    .form-title {
+    }
+
+    .input-wrapper {
+        padding: 1em;
+        border-radius: 1em;
+
+        input, textarea {
+            padding: .5em;
+        }
+    }
+}

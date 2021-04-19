@@ -1,0 +1,51 @@
+﻿@using HMZ_V3.Models.Contact
+@using System.Timers
+
+<div class="status-message @State">
+    @if (MessageStatus == MessageStatus.Success)
+    {
+        <i class="las la-check-circle la-3x"></i>
+    }
+    else
+    {
+        <i class="las la-times-circle la-3x"></i>
+    }
+    <div class="content">
+        @Message
+    </div>
+    <button type="button" @onclick="Close"><i class="las la-times-circle"></i></button>
+</div>
+
+
+@code {
+
+    public MessageStatus MessageStatus { get; set; }
+    public string Message { get; set; }
+    private string State { get; set; } = "slide-upwards";
+
+    public void Show()
+    {
+        State = "slide-downwards";
+        StateHasChanged();
+
+        var timer = new Timer()
+        {
+            Interval = 5000,
+        };
+
+        timer.Elapsed += (obj, eventArgs) =>
+        {
+            Close();
+            timer.Enabled = false;
+            timer.Dispose();
+        };
+
+        timer.Enabled = true;
+    }
+
+    public void Close()
+    {
+        State = "slide-upwards";
+        StateHasChanged();
+    }
+}
