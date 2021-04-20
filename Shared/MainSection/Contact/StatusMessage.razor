@@ -1,5 +1,7 @@
 ﻿@using HMZ_V3.Models.Contact
+@using HMZ_V3.Services
 @using System.Timers
+@implements IDisposable
 
 <div class="status-message @State @MessageStatus">
     @if (MessageStatus == MessageStatus.Success)
@@ -13,39 +15,52 @@
     <div class="content">
         @Message
     </div>
-    <button type="button" @onclick="Close"><i class="las la-times-circle"></i></button>
 </div>
 
-
 @code {
-
+    [Inject] NotificationNotifierService NotificationNotifierService { get; set; }
     public MessageStatus MessageStatus { get; set; }
     public string Message { get; set; }
     private string State { get; set; } = "slide-upwards";
 
-    public void Show()
+    protected override void OnInitialized()
     {
-        State = "slide-downwards";
-        StateHasChanged();
+        NotificationNotifierService.Notify += Show;
+    }
 
-        var timer = new Timer()
+    public async Task Show(string message, MessageStatus messageStatus)
+    {
+        await InvokeAsync(() =>
         {
-            Interval = 5000,
-        };
+            this.Message = message;
+            this.MessageStatus = messageStatus;
+            State = "slide-downwards";
+            StateHasChanged();
 
-        timer.Elapsed += (obj, eventArgs) =>
-        {
-            Close();
-            timer.Enabled = false;
-            timer.Dispose();
-        };
+            var timer = new Timer()
+            {
+                Interval = 5000,
+            };
 
-        timer.Enabled = true;
+            timer.Elapsed += (obj, eventArgs) =>
+            {
+                Close();
+                timer.Enabled = false;
+                timer.Dispose();
+            };
+
+            timer.Enabled = true;
+        });
     }
 
     public void Close()
     {
         State = "slide-upwards";
         StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NotificationNotifierService.Notify -= Show;
     }
 }

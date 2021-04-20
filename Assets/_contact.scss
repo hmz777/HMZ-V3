@@ -9,14 +9,35 @@
     }
 
     .input-wrapper {
+        display: flex;
+        flex-flow: column;
         width: 49%;
+        margin-bottom: 2em;
+        position: relative;
 
         .validation-message {
-            display: block;
+            bottom: -1.5em;
+            right: 0;
+            position: absolute;
+            padding: .5em 1em;
+            background: red;
+            color: white;
+            border-radius: 1em;
+            font-size: .8em;
+            align-self: flex-end;
+            opacity: 0;
+            animation: FadeIn .5s $main-easing forwards;
+
+            &:before {
+                position: relative;
+                @extend .las;
+                content: la-content($la-times-circle);
+                color: white;
+                margin-right: .5em;
+            }
         }
 
         .form-input {
-            margin-bottom: 1em;
             display: flex;
             flex-flow: row;
             align-items: stretch;
@@ -55,7 +76,7 @@
                 border-radius: 1em;
                 transition: box-shadow .3s ease-in-out;
 
-                &:valid, &:focus {
+                &.modified, &:focus {
 
                     & + i {
                         & + label {
@@ -67,7 +88,7 @@
                 }
 
                 &.invalid {
-                    box-shadow: 0 0 0 4px rgb(255,0,0);
+                    box-shadow: 0 0 0 4px red;
 
                     & + i {
                         color: red;
@@ -77,10 +98,6 @@
                         }
                     }
                 }
-
-                &.valid {
-                    border: none;
-                }
             }
         }
 
@@ -89,13 +106,24 @@
 
             .form-input {
                 textarea {
-                    &:valid, &:focus {
-
+                    &.modified, &:focus {
                         & + i {
                             & + label {
                                 color: $logo-primary;
                                 top: 0.15em;
                                 transform: translate(-1.8em,0) scale(.8);
+                            }
+                        }
+                    }
+
+                    &.invalid {
+                        box-shadow: 0 0 0 4px red;
+
+                        & + i {
+                            color: red;
+
+                            & + label {
+                                color: red;
                             }
                         }
                     }
@@ -116,15 +144,17 @@
 
 .status-message {
     position: absolute;
+    top: 0;
     left: 50%;
-    transform: translateX(-50%);
     transition: transform .5s $main-easing;
     display: flex;
     flex-flow: row;
+    align-items: stretch;
     padding: 1em;
     border-radius: 1em;
     background: $logo-primary;
     z-index: 8;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 
     &.Success {
         background: green;
@@ -135,15 +165,18 @@
     }
 
     &.slide-upwards {
-        transform: translateY(-100%);
+        transform: translate(-50%, -120%);
     }
 
     &.slide-downwards {
-        transform: translateY(10%);
+        transform: translate(-50%, 10%);
     }
 
     .content {
+        display: flex;
+        align-items: center;
         color: white;
+        margin: 0 1em;
     }
 
     button {

@@ -14,7 +14,7 @@ namespace HMZ_V3.Models.Contact
         public string FullName { get; set; }
 
         [Required]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Invalid e-mail address.")]
         [DataType(DataType.EmailAddress)]
         [StringLength(150, ErrorMessage = "Email can't be more than {1} characters.")]
         public string Email { get; set; }

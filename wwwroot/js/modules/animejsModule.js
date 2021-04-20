@@ -16,7 +16,10 @@ var skills = { target: document.getElementById("skills"), delay: 500, duration: 
 var work = { target: document.getElementById("work"), delay: 500, duration: 1500, length: 0 };
 var about = { target: document.getElementById("about"), delay: 500, duration: 1500, length: 0 };
 var contact = { target: document.getElementById("contact"), delay: 500, duration: 1500, length: 0 };
+var modalOptions = { width: 45, height: 38, xPosition: -60, yPosition: -1 };
 var animeInstances = {};
+
+//investigate the small delay problem between the hometrigger cards
 
 export function PageTransition(page, alternative = false) {
 
@@ -181,11 +184,11 @@ function SkillsTrigger(aniDirection = 'normal') {
         let StartAnimationObject = {
             first: {
                 targets: skills.target,
-                translateX: -60 + 'em',
-                translateY: 0 + 'em',
+                translateX: modalOptions.xPosition + 'em',
+                translateY: modalOptions.yPosition + 'em',
                 borderRadius: 1 + "em",
-                width: 45 + "em",
-                height: 35 + "em",
+                width: modalOptions.width + "em",
+                height: modalOptions.height + "em",
                 scale: 1,
                 duration: skills.duration,
                 delay: skills.delay,
@@ -223,11 +226,11 @@ function WorkTrigger(aniDirection = 'normal') {
         let StartAnimationObject = {
             first: {
                 targets: work.target,
-                translateX: -60 + 'em',
-                translateY: -5 + 'em',
+                translateX: modalOptions.xPosition + 'em',
+                translateY: (modalOptions.yPosition - 5) + 'em',
                 borderRadius: 1 + "em",
-                width: 45 + "em",
-                height: 35 + "em",
+                width: modalOptions.width + "em",
+                height: modalOptions.height + "em",
                 scale: 1,
                 duration: work.duration,
                 delay: work.delay,
@@ -265,11 +268,11 @@ function AboutTrigger(aniDirection = 'normal') {
         let StartAnimationObject = {
             first: {
                 targets: about.target,
-                translateX: -60 + 'em',
-                translateY: -10 + 'em',
+                translateX: modalOptions.xPosition + 'em',
+                translateY: (modalOptions.yPosition - 10) + 'em',
                 borderRadius: 1 + "em",
-                width: 45 + "em",
-                height: 35 + "em",
+                width: modalOptions.width + "em",
+                height: modalOptions.height + "em",
                 scale: 1,
                 duration: about.duration,
                 delay: about.delay,
@@ -306,11 +309,11 @@ function ContactTrigger(aniDirection = 'normal') {
         let StartAnimationObject = {
             first: {
                 targets: contact.target,
-                translateX: -60 + 'em',
-                translateY: -15 + 'em',
+                translateX: modalOptions.xPosition + 'em',
+                translateY: (modalOptions.yPosition - 15) + 'em',
                 borderRadius: 1 + "em",
-                width: 45 + "em",
-                height: 35 + "em",
+                width: modalOptions.width + "em",
+                height: modalOptions.height + "em",
                 scale: 1,
                 duration: contact.duration,
                 delay: contact.delay,

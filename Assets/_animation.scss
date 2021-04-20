@@ -7,3 +7,13 @@
         box-shadow: 0 0 1px 15px rgba(255,255,255, 0);
     }
 }
+
+@keyframes FadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

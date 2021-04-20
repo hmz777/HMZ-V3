@@ -2,28 +2,29 @@
 @using HMZ_V3.Shared.MainSection.Skills
 @using HMZ_V3.Models.Skills
 
-<div class="modal modal-light" id="skills-modal">
-    <header class="modal-header" id="skills-header">
-        <div class="modal-header-inner">
-            <button></button>
-            <h2>Skills</h2>
-        </div>
-    </header>
-    <div class="modal-body" id="skills-body">
-        @if (SkillLists == null)
-        {
-            <i class="las la-circle-notch la-spin m-auto"></i>
-        }
-        else
-        {
-            for (int i = 0; i < SkillLists.Count; i++)
+<div class="hero-card hero-card--light hero-nav-item ripple-animation" id="skills">
+    <div class="modal modal-light" id="skills-modal">
+        <header class="modal-header" id="skills-header">
+            <div class="modal-header-inner">
+                <button></button>
+                <h2>Skills</h2>
+            </div>
+        </header>
+        <div class="modal-body" id="skills-body">
+            @if (SkillLists == null)
             {
-                <SkillList ListId="@($"skill-list-{i}")" SkillListModel="SkillLists[i]"></SkillList>
+                <i class="las la-circle-notch la-spin m-auto"></i>
             }
-        }
+            else
+            {
+                for (int i = 0; i < SkillLists.Count; i++)
+                {
+                    <SkillList ListId="@($"skill-list-{i}")" SkillListModel="SkillLists[i]"></SkillList>
+                }
+            }
+        </div>
     </div>
 </div>
-
 
 @code {
     [Inject] HttpClient HttpClient { get; set; }
