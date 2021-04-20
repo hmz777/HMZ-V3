@@ -1,7 +1,7 @@
 ﻿@using HMZ_V3.Models.Contact
 @using System.Timers
 
-<div class="status-message @State">
+<div class="status-message @State @MessageStatus">
     @if (MessageStatus == MessageStatus.Success)
     {
         <i class="las la-check-circle la-3x"></i>

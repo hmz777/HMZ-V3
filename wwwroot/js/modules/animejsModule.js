@@ -97,6 +97,8 @@ function WaitForAnimation(time) {
 function HomeTrigger(aniDirection = 'normal') {
 
     if (animeInstances.Home == null) {
+        WaitForAnimation(((1800 + 400) * 3) + 450 + 500);
+
         animeInstances.Home = anime.timeline({ easing: 'easeOutElastic(1, .5)' });
 
         let StartAnimationObject = {
@@ -142,10 +144,10 @@ function HomeTrigger(aniDirection = 'normal') {
             .add(StartAnimationObject.second, home.options.offset)
             .add(StartAnimationObject.third)
             .add(StartAnimationObject.forth);
-
-        WaitForAnimation((1600 + 250 + 450) * 3);
     }
     else {
+        WaitForAnimation(home.options.wait + 500);
+
         if (animeInstances.HomeReverse == null) {
             animeInstances.HomeReverse = anime({
                 targets: home.first,
@@ -169,8 +171,6 @@ function HomeTrigger(aniDirection = 'normal') {
             }
             animeInstances.HomeReverse.play();
         }
-
-        WaitForAnimation(home.options.wait);
     }
 }
 

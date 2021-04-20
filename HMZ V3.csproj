@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <None Include="compilerconfig.json" />
+    <None Include="wwwroot\js\modules\contactModule.js" />
     <None Include="wwwroot\js\modules\typedjsModule.js" />
   </ItemGroup>
 

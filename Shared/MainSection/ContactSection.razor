@@ -3,7 +3,6 @@
 @using HMZ_V3.Models.Contact
 @using System.Text.Json
 @using System.Text
-@using System.Net.Http.Headers
 
 <div class="modal modal-dark" id="contact-modal">
     <header class="modal-header" id="contact-header">
@@ -16,42 +15,61 @@
         <EditForm EditContext="EditContext" OnValidSubmit="HandleValidSubmit" OnInvalidSubmit="HandleInvalidSubmit" id="contact-form">
             <DataAnnotationsValidator />
             <span class="form-title">Contact me through here, but note that:</span>
-            <div class="input-wrapper">
-                <label for="Name">Full name is required</label>
-                <InputText type="text" @bind-Value="MessageModel.FullName" placeholder="Enter your name" />
-                <ValidationMessage For="@(() => MessageModel.FullName)" />
+            <div class="flex-row justify-content-between">
+                <div class="input-wrapper">
+                    <div class="form-input">
+                        <InputText class="form-field" type="text" id="name" @bind-Value="MessageModel.FullName" min="1" />
+                        <i class="las la-user"></i>
+                        <label for="name">Full name is required</label>
+                    </div>
+                </div>
+                <div class="input-wrapper">
+                    <div class="form-input">
+                        <InputText class="form-field" type="text" id="email" @bind-Value="MessageModel.Email" min="1" />
+                        <i class="las la-at"></i>
+                        <label for="email">Email also required</label>
+                    </div>
+                </div>
             </div>
             <div class="input-wrapper">
-                <label for="Email">Email also required</label>
-                <InputText type="email" @bind-Value="MessageModel.Email" placeholder="Enter your email" />
-                <ValidationMessage For="@(() => MessageModel.Email)" />
+                <div class="form-input">
+                    <InputText class="form-field" type="text" id="subject" @bind-Value="MessageModel.Subject" min="1" />
+                    <i class="las la-info"></i>
+                    <label for="subject">Subject is up to you</label>
+                </div>
             </div>
-            <div class="input-wrapper">
-                <label for="Subject">Subject is up to you</label>
-                <InputText type="text" @bind-Value="MessageModel.Subject" placeholder="Enter message subject" />
-                <ValidationMessage For="@(() => MessageModel.Subject)" />
-            </div>
-            <div class="input-wrapper">
-                <label for="Message">As well as the message content</label>
-                <InputTextArea @bind-Value="MessageModel.Message" rows="5" placeholder="Enter your message"></InputTextArea>
-                <ValidationMessage For="@(() => MessageModel.Message)" />
+            <div class="input-wrapper input-wrapper--full">
+                <div class="form-input">
+                    <InputTextArea class="form-field" id="message" @bind-Value="MessageModel.Message" rows="5" minlength="1"></InputTextArea>
+                    <i class="las la-comment-alt"></i>
+                    <label for="message">As well as the message content</label>
+                </div>
             </div>
             <button class="form-button button-submit" type="submit"><i class="las la-circle-notch la-spin @SubmitButtonState"></i> Send Message</button>
         </EditForm>
     </div>
 </div>
+<StatusMessage @ref="StatusMessage"></StatusMessage>
 
 @code {
+    [Inject] IJSRuntime JSRuntime { get; set; }
     private MessageModel MessageModel { get; set; } = new MessageModel();
     private StatusMessage StatusMessage { get; set; }
     private EditContext EditContext { get; set; }
+    private IJSObjectReference ContactModule;
     private string SubmitButtonState { get; set; } = "d-none";
 
     [Inject] HttpClient HttpClient { get; set; }
 
-    protected override void OnInitialized()
+    protected async override Task OnInitializedAsync()
     {
         EditContext = new EditContext(MessageModel);
+        ContactModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/modules/contactModule.js");
+    }
+
+    private async Task HighlightField(int FieldIndex)
+    {
+        //await ContactModule.InvokeVoidAsync("HighlightFormField", FieldIndex);
     }
 
     private async Task HandleValidSubmit()
