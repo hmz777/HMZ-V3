@@ -1,4 +1,5 @@
-﻿var currentPage = "";
+﻿var pageHistory = [];
+var currentPage = null;
 var home = {
     first: document.querySelectorAll(".hero-intro .hero-card"),
     second: document.querySelectorAll(".hero-intro .hero-card .text"),
@@ -19,17 +20,18 @@ var contact = { target: document.getElementById("contact"), delay: 500, duration
 var modalOptions = { width: 45, height: 38, xPosition: -60, yPosition: -1 };
 var animeInstances = {};
 
-//investigate the small delay problem between the hometrigger cards
+export function PageTransition(page = "home", alternative = false, direction = 'forwards') {
 
-export function PageTransition(page, alternative = false) {
+    let requestedPage = direction == 'forwards' ? page : pageHistory.pop();
 
-    if (SamePage(page)) {
+    if (SamePage(requestedPage)) {
+        console.log("Same page requested.");
         return;
     }
 
     HideCurrentPage();
 
-    switch (page) {
+    switch (requestedPage) {
         case "home": {
             if (alternative) {
                 HomeTrigger('reverse');
@@ -58,7 +60,21 @@ export function PageTransition(page, alternative = false) {
         default:
     }
 
-    currentPage = page;
+    if (currentPage != null && direction == 'forwards') {
+        pageHistory.push(currentPage);
+    }
+
+    currentPage = requestedPage;
+
+    if (currentPage == 'home') {
+        pageHistory = [];
+    }
+
+    console.log(pageHistory);
+}
+
+export function GoBack() {
+    PageTransition('', true, 'backwards');
 }
 
 function SamePage(requestedPage) {
