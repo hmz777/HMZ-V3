@@ -51,7 +51,9 @@
                     </div>
                     <ValidationMessage For="() => MessageModel.Message"></ValidationMessage>
                 </div>
-                <button class="form-button button-submit" type="submit"><i class="las la-circle-notch la-spin @SubmitButtonState"></i> Send Message</button>
+                <button class="form-button button-submit @SubmitButtonState" type="submit">                    
+                    <span>Send Message</span>
+                </button>
             </EditForm>
         </div>
     </div>
@@ -63,7 +65,7 @@
     private MessageModel MessageModel { get; set; } = new MessageModel();
     private EditContext EditContext { get; set; }
     private IJSObjectReference ContactModule;
-    private string SubmitButtonState { get; set; } = "d-none";
+    private string SubmitButtonState { get; set; } = "";
 
     [Inject] HttpClient HttpClient { get; set; }
 
@@ -75,24 +77,25 @@
 
     private async Task HandleValidSubmit()
     {
-        SubmitButtonState = "";
+        SubmitButtonState = "loading";
 
-        var message = new HttpRequestMessage(HttpMethod.Post, "https://formspree.io/f/mzbkrpry");
-        message.Headers.Clear();
-        message.SetBrowserRequestMode(BrowserRequestMode.Cors);
-        message.Content = new StringContent(JsonSerializer.Serialize(EditContext.Model), Encoding.UTF8, "application/json");
-        await HttpClient.SendAsync(message, HttpCompletionOption.ResponseContentRead);
-        SubmitButtonState = "d-none";
+        //var message = new HttpRequestMessage(HttpMethod.Post, "https://formspree.io/f/mzbkrpry");
+        //message.Headers.Clear();
+        //message.SetBrowserRequestMode(BrowserRequestMode.Cors);
+        //message.Content = new StringContent(JsonSerializer.Serialize(EditContext.Model), Encoding.UTF8, "application/json");
+        //await HttpClient.SendAsync(message, HttpCompletionOption.ResponseContentRead);
+
+        //SubmitButtonState = "";
 
         MessageModel = new MessageModel();
         EditContext = new EditContext(MessageModel);
 
-        await NotificationNotifierService.Inform("Message sent successfully!", MessageStatus.Success);
+        await NotificationNotifierService.Inform("Message sent!", MessageStatus.Success);
     }
 
     private async Task HandleInvalidSubmit()
     {
-        await NotificationNotifierService.Inform("Invalid message! please correct the errors in the form.", MessageStatus.Error);
+        await NotificationNotifierService.Inform("Invalid information! Get it right this time.", MessageStatus.Error);
     }
 
     public void Dispose()
