@@ -1,8 +1,10 @@
-﻿<div class="hero-card hero-card--dark hero-nav-item ripple-animation" id="work">
+﻿@implements IAsyncDisposable
+
+<div class="hero-card hero-card--dark hero-nav-item ripple-animation" id="work">
     <div class="modal modal-dark" id="work-modal">
         <header class="modal-header" id="work-header">
             <div class="modal-header-inner">
-                <button></button>
+                <button type="button" @onclick="Back"></button>
                 <h2>Work</h2>
             </div>
         </header>
@@ -12,5 +14,22 @@
 </div>
 
 @code {
+    [Inject] IJSRuntime JSRuntime { get; set; }
 
+    IJSObjectReference AnimeJsModule;
+
+    protected async override Task OnInitializedAsync()
+    {
+        AnimeJsModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/modules/animejsModule.js");
+    }
+
+    private async Task Back()
+    {
+        await AnimeJsModule.InvokeVoidAsync("GoBack");
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await AnimeJsModule.DisposeAsync();
+    }
 }

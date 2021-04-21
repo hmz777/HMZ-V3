@@ -59,7 +59,7 @@
                 left: 3em;
                 top: 50%;
                 transform: translate(0,-50%);
-                color: darkgray;
+                color: dimgray;
                 transition: top .3s ease-in-out, transform .3s ease-in-out, color .3s ease-in-out;
                 cursor: pointer;
                 font-size: .9em;
@@ -106,6 +106,8 @@
 
             .form-input {
                 textarea {
+                    resize: none;
+
                     &.modified, &:focus {
                         & + i {
                             & + label {
@@ -133,7 +135,7 @@
     }
 
     .form-button {
-        display: inline-block;
+        display: inline-flex;
         background: white;
         padding: 1em 2em;
         border-radius: 2em;
@@ -141,6 +143,8 @@
         position: relative;
         border: 2px solid white;
         overflow: hidden;
+        justify-content: center;
+        align-items: center;
 
         span {
             color: $logo-primary;
@@ -148,16 +152,17 @@
         }
 
         &:after {
-            @extend .las;
-            content: la-content($la-circle-notch);
+            content: "";
             position: absolute;
             z-index: 2;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%,-50%);
+            width: 1em;
+            height: 1em;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: white;
             display: none;
             font-size: 1.5em;
-            animation: FadeIn 2.5s $main-easing forwards, spin 2s linear infinite;
+            animation: FadeIn 2.5s $main-easing forwards, la-spin 2s linear infinite;
             color: white;
         }
 

@@ -1,4 +1,4 @@
-﻿@implements IDisposable
+﻿@implements IAsyncDisposable
 @using HMZ_V3.Shared.MainSection.Contact
 @using HMZ_V3.Models.Contact
 @using HMZ_V3.Services
@@ -9,7 +9,7 @@
     <div class="modal modal-dark" id="contact-modal">
         <header class="modal-header" id="contact-header">
             <div class="modal-header-inner">
-                <button></button>
+                <button type="button" @onclick="Back"></button>
                 <h2>Contact</h2>
             </div>
         </header>
@@ -51,7 +51,7 @@
                     </div>
                     <ValidationMessage For="() => MessageModel.Message"></ValidationMessage>
                 </div>
-                <button class="form-button button-submit @SubmitButtonState" type="submit">                    
+                <button class="form-button button-submit @SubmitButtonState" type="submit">
                     <span>Send Message</span>
                 </button>
             </EditForm>
@@ -62,10 +62,14 @@
 @code {
     [Inject] NotificationNotifierService NotificationNotifierService { get; set; }
     [Inject] IJSRuntime JSRuntime { get; set; }
-    private MessageModel MessageModel { get; set; } = new MessageModel();
-    private EditContext EditContext { get; set; }
-    private IJSObjectReference ContactModule;
-    private string SubmitButtonState { get; set; } = "";
+
+    MessageModel MessageModel { get; set; } = new MessageModel();
+    EditContext EditContext { get; set; }
+
+    IJSObjectReference ContactModule;
+    IJSObjectReference AnimeJsModule;
+
+    string SubmitButtonState { get; set; } = "";
 
     [Inject] HttpClient HttpClient { get; set; }
 
@@ -73,22 +77,23 @@
     {
         EditContext = new EditContext(MessageModel);
         ContactModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/modules/contactModule.js");
+        AnimeJsModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/modules/animejsModule.js");
     }
 
     private async Task HandleValidSubmit()
     {
         SubmitButtonState = "loading";
 
-        //var message = new HttpRequestMessage(HttpMethod.Post, "https://formspree.io/f/mzbkrpry");
-        //message.Headers.Clear();
-        //message.SetBrowserRequestMode(BrowserRequestMode.Cors);
-        //message.Content = new StringContent(JsonSerializer.Serialize(EditContext.Model), Encoding.UTF8, "application/json");
-        //await HttpClient.SendAsync(message, HttpCompletionOption.ResponseContentRead);
-
-        //SubmitButtonState = "";
+        var message = new HttpRequestMessage(HttpMethod.Post, "https://formspree.io/f/mzbkrpry");
+        message.Headers.Clear();
+        message.SetBrowserRequestMode(BrowserRequestMode.Cors);
+        message.Content = new StringContent(JsonSerializer.Serialize(EditContext.Model), Encoding.UTF8, "application/json");
+        await HttpClient.SendAsync(message, HttpCompletionOption.ResponseContentRead);
 
         MessageModel = new MessageModel();
         EditContext = new EditContext(MessageModel);
+
+        SubmitButtonState = "";
 
         await NotificationNotifierService.Inform("Message sent!", MessageStatus.Success);
     }
@@ -98,8 +103,15 @@
         await NotificationNotifierService.Inform("Invalid information! Get it right this time.", MessageStatus.Error);
     }
 
-    public void Dispose()
+    private async Task Back()
+    {
+        await AnimeJsModule.InvokeVoidAsync("GoBack");
+    }
+
+    public async ValueTask DisposeAsync()
     {
         HttpClient.Dispose();
+        await ContactModule.DisposeAsync();
+        await AnimeJsModule.DisposeAsync();
     }
 }

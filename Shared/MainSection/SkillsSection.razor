@@ -1,4 +1,4 @@
-﻿@implements IDisposable
+﻿@implements IAsyncDisposable
 @using HMZ_V3.Shared.MainSection.Skills
 @using HMZ_V3.Models.Skills
 
@@ -6,7 +6,7 @@
     <div class="modal modal-light" id="skills-modal">
         <header class="modal-header" id="skills-header">
             <div class="modal-header-inner">
-                <button></button>
+                <button type="button" @onclick="Back"></button>
                 <h2>Skills</h2>
             </div>
         </header>
@@ -30,15 +30,24 @@
     [Inject] HttpClient HttpClient { get; set; }
     [Inject] IJSRuntime JSRuntime { get; set; }
 
+    IJSObjectReference AnimeJsModule;
+
     List<SkillListModel> SkillLists;
 
     protected async override Task OnInitializedAsync()
     {
+        AnimeJsModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/modules/animejsModule.js");
         SkillLists = await HttpClient.GetFromJsonAsync<List<SkillListModel>>("/skills.json");
     }
 
-    public void Dispose()
+    private async Task Back()
+    {
+        await AnimeJsModule.InvokeVoidAsync("GoBack");
+    }
+
+    public async ValueTask DisposeAsync()
     {
         HttpClient.Dispose();
+        await AnimeJsModule.DisposeAsync();
     }
 }
