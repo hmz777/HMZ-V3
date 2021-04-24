@@ -1,3 +1,52 @@
 ﻿@page "/"
+@implements IAsyncDisposable
 
-<MainWrapper></MainWrapper>
+<section class="section">
+    <div class="container container--column">
+        <div class="hero">
+            <div class="hero-intro">
+                <div class="hero-card hero-card--light z-3">
+                    <span class="text">Hamzi Alsheikh</span>
+                </div>
+                <div class="hero-card hero-card--dark z-2">
+                    <span class="text">Software Developer</span>
+                </div>
+                <div class="hero-card hero-card--light z-1">
+                    <span class="text">Mechatronics Engineer</span>
+                </div>
+            </div>
+            <div class="hero-list">
+                <SkillsSection></SkillsSection>
+                <WorkSection></WorkSection>
+                <AboutSection></AboutSection>
+                <ContactSection></ContactSection>
+            </div>
+        </div>
+    </div>
+</section>
+
+@code {
+    [Inject] IJSRuntime JSRuntime { get; set; }
+
+    IJSObjectReference AnimeJsModule;
+
+    protected async override Task OnInitializedAsync()
+    {
+        AnimeJsModule = await JSRuntime.InvokeAsync<IJSObjectReference>(
+            "import", "./js/modules/animejsModule.js");
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            await AnimeJsModule.InvokeVoidAsync("PageTransition");
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await AnimeJsModule.InvokeVoidAsync("Dispose");
+        await AnimeJsModule.DisposeAsync();
+    }
+}

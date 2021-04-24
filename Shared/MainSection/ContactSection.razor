@@ -110,7 +110,6 @@
 
     public async ValueTask DisposeAsync()
     {
-        HttpClient.Dispose();
         await ContactModule.DisposeAsync();
         await AnimeJsModule.DisposeAsync();
     }

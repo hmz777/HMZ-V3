@@ -4,7 +4,7 @@
     <div class="sidenav-inner-slide">
         <div class="sidenav-inner-slide--inner">
             <div class="sidenav-upper">
-                <Logo Clickable="false"></Logo>
+                <Logo Size="small"></Logo>
                 <button type="button" @onclick="CloseMenu" class="toggler-button menu-close nav-clicked" href="#">
                     <div class="toggler-icon">
                         <div class="toggler-icon--inner"></div>
@@ -40,9 +40,13 @@
 @code {
     [Parameter] public EventCallback NavbarAdvance { get; set; }
     [Parameter] public EventCallback NavbarRetract { get; set; }
+
     [Inject] IJSRuntime JSRuntime { get; set; }
+
     IJSObjectReference NavbarModule;
+
     DotNetObjectReference<SideNav> SidenavRef;
+
     string State = "";
 
     protected async override Task OnInitializedAsync()

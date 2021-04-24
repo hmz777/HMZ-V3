@@ -9,8 +9,8 @@ var home = {
         maxDuration: 1200,
         minDelay: 0,
         maxDelay: 400,
-        wait: 1500,
-        offset: '-=1200'
+        wait: 1000,
+        offset: '-=1700'
     }
 };
 var skills = { target: document.getElementById("skills"), delay: 500, duration: 1500, length: 0 };
@@ -25,7 +25,6 @@ export function PageTransition(page = "home", alternative = false, direction = '
     let requestedPage = direction == 'forwards' ? page : pageHistory.pop();
 
     if (SamePage(requestedPage)) {
-        console.log("Same page requested.");
         return;
     }
 
@@ -34,7 +33,7 @@ export function PageTransition(page = "home", alternative = false, direction = '
     switch (requestedPage) {
         case "home": {
             if (alternative) {
-                HomeTrigger('reverse');
+                HomeTrigger('reverse', alternative);
             }
             else {
                 HomeTrigger();
@@ -69,12 +68,16 @@ export function PageTransition(page = "home", alternative = false, direction = '
     if (currentPage == 'home') {
         pageHistory = [];
     }
-
-    console.log(pageHistory);
 }
 
 export function GoBack() {
     PageTransition('', true, 'backwards');
+}
+
+export function Dispose() {
+    pageHistory = [];
+    currentPage = null;
+    animeInstances = {};
 }
 
 function SamePage(requestedPage) {
@@ -85,7 +88,7 @@ function HideCurrentPage() {
 
     switch (currentPage) {
         case "home": {
-            HomeTrigger();
+            HomeTrigger('normal', true);
             break;
         }
         case "skills": {
@@ -113,16 +116,11 @@ function WaitForAnimation(time) {
     setTimeout(EnableControls, time);
 }
 
-function HomeTrigger(aniDirection = 'normal') {
-
-    if (animeInstances.Home == null) {
-        WaitForAnimation(((1800 + 400) * 3) + 450 + 500);
-
-        animeInstances.Home = anime.timeline({ easing: 'easeOutElastic(1, .5)' });
-
+function HomeTrigger(aniDirection = 'normal', alternative = false) {
+    if (!alternative) {
         let StartAnimationObject = {
             first: {
-                targets: home.third,
+                targets: '.hero-list .hero-card',
                 translateX: [-700, 0],
                 translateY: [-1000, 0],
                 opacity: [0, 1],
@@ -131,45 +129,56 @@ function HomeTrigger(aniDirection = 'normal') {
                 delay: function () { return anime.random(0, 400); }
             },
             second: {
-                targets: home.first,
+                targets: '.hero-intro .hero-card',
                 translateX: [-1000, 0],
                 translateY: [-500, 0],
                 opacity: [0, 1],
-                borderRadius: 50 + "%",
                 scale: 0.6,
                 duration: function () { return anime.random(1200, 1800); },
                 delay: function () { return anime.random(0, 400); }
             },
             third: {
-                targets: home.first,
+                targets: '.hero-intro .hero-card',
                 borderRadius: 1 + "em",
                 scale: 1,
                 width: function (el, i, l) { if (i == 0) return 36 + "em"; if (i == 1) return 45 + "em"; if (i == 2) return 52 + "em"; },
-                height: 8 + 'em',//15
+                height: 8 + 'em',
                 duration: function () { return anime.random(1200, 1800); },
                 delay: function () { return anime.random(0, 400); }
             },
             forth: {
-                targets: home.second,
+                targets: '.hero-intro .hero-card .text',
                 easing: 'linear',
                 opacity: 1,
-                duration: function () { return anime.random(300, 450); },
-                delay: function (e, i, j) { return (i) * 20; }
+                duration: function () { return anime.random(200, 400); },
+                delay: function (e, i, j) { return i * 100; }
             }
         };
+
+        animeInstances.Home = anime.timeline({ easing: 'easeOutElastic(1, .5)', autoplay: false });
 
         animeInstances.Home
             .add(StartAnimationObject.first)
             .add(StartAnimationObject.second, home.options.offset)
             .add(StartAnimationObject.third)
             .add(StartAnimationObject.forth);
+
+        if (animeInstances.Home.reversed) {
+            animeInstances.Home.reverse();
+        }
+
+        animeInstances.Home.play();
+
+        WaitForAnimation(((1800 + 400) * 3) + 450 + 500);
     }
     else {
         WaitForAnimation(home.options.wait + 500);
 
         if (animeInstances.HomeReverse == null) {
+            let target = document.querySelectorAll(".hero-intro .hero-card");
+
             animeInstances.HomeReverse = anime({
-                targets: home.first,
+                targets: target,
                 translateX: [0, -1000],
                 easing: 'easeInElastic(1, .5)',
                 duration: function () { return anime.random(home.options.minDuration, home.options.maxDuration); },
@@ -196,10 +205,11 @@ function HomeTrigger(aniDirection = 'normal') {
 function SkillsTrigger(aniDirection = 'normal') {
 
     if (animeInstances.Skills == null) {
+        let target = document.getElementById("skills");
 
         let StartAnimationObject = {
             first: {
-                targets: skills.target,
+                targets: target,
                 translateX: modalOptions.xPosition + 'em',
                 translateY: modalOptions.yPosition + 'em',
                 borderRadius: 1 + "em",
@@ -214,7 +224,6 @@ function SkillsTrigger(aniDirection = 'normal') {
         };
 
         animeInstances.Skills = anime(StartAnimationObject.first);
-
         skills.length = Object.keys(StartAnimationObject).length;
     }
 
@@ -231,17 +240,19 @@ function SkillsTrigger(aniDirection = 'normal') {
         animeInstances.Skills.play();
     }
 
-    //WaitForAnimation((skills.duration * skills.length) + skills.delay);
+    console.log("Instance played");
+
     ToggleRippleEffectForActiveElement("skills", aniDirection);
 }
 
 function WorkTrigger(aniDirection = 'normal') {
 
     if (animeInstances.Work == null) {
+        let target = document.getElementById("work");
 
         let StartAnimationObject = {
             first: {
-                targets: work.target,
+                targets: target,
                 translateX: modalOptions.xPosition + 'em',
                 translateY: (modalOptions.yPosition - 5) + 'em',
                 borderRadius: 1 + "em",
@@ -280,10 +291,11 @@ function WorkTrigger(aniDirection = 'normal') {
 function AboutTrigger(aniDirection = 'normal') {
 
     if (animeInstances.About == null) {
+        let target = document.getElementById("about");
 
         let StartAnimationObject = {
             first: {
-                targets: about.target,
+                targets: target,
                 translateX: modalOptions.xPosition + 'em',
                 translateY: (modalOptions.yPosition - 10) + 'em',
                 borderRadius: 1 + "em",
@@ -321,10 +333,11 @@ function AboutTrigger(aniDirection = 'normal') {
 
 function ContactTrigger(aniDirection = 'normal') {
     if (animeInstances.Contact == null) {
+        let target = document.getElementById("contact");
 
         let StartAnimationObject = {
             first: {
-                targets: contact.target,
+                targets: target,
                 translateX: modalOptions.xPosition + 'em',
                 translateY: (modalOptions.yPosition - 15) + 'em',
                 borderRadius: 1 + "em",

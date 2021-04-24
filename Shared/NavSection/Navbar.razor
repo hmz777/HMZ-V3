@@ -1,64 +1,92 @@
 ﻿@implements IAsyncDisposable
 
 <nav id="navbar" class="@NavState">
-    <ul class="nav-items" role="list">
-        <li>
-            <button class="nav-item" type="button" id="skills-btn" @onclick="SkillsTrigger">
-                <i class="las la-star"></i>
-                <div class="nav-label">
-                    <span>Tech & Skills</span>
-                </div>
-            </button>
-        </li>
-        <li>
-            <button class="nav-item" type="button" id="work-btn" @onclick="WorkTrigger">
-                <i class="las la-server"></i>
-                <div class="nav-label">
-                    <span>Work</span>
-                </div>
-            </button>
-        </li>
-        <li>
-            <button id="navBtn" type="button" @onclick="NavToggle" class="toggler-button menu-trigger @ButtonState" disabled="@ButtonDisableState" href="#">
-                <div class="toggler-icon">
-                    <div class="toggler-icon--inner"></div>
-                </div>
-            </button>
-        </li>
-        <li>
-            <button class="nav-item" type="button" id="about-btn" @onclick="AboutTrigger">
-                <i class="las la-info-circle"></i>
-                <div class="nav-label">
-                    <span>About Me</span>
-                </div>
-            </button>
-        </li>
-        <li>
-            <button class="nav-item" type="button" id="contact-btn" @onclick="ContactTrigger">
-                <i class="las la-comment"></i>
-                <div class="nav-label">
-                    <span>Contact</span>
-                </div>
-            </button>
-        </li>
-    </ul>
+    @if (IsHome)
+    {
+        <ul class="nav-items" role="list">
+            <li>
+                <button class="nav-item" type="button" id="skills-btn" @onclick="SkillsTrigger">
+                    <i class="las la-star"></i>
+                    <div class="nav-label">
+                        <span>Tech & Skills</span>
+                    </div>
+                </button>
+            </li>
+            <li>
+                <button class="nav-item" type="button" id="work-btn" @onclick="WorkTrigger">
+                    <i class="las la-server"></i>
+                    <div class="nav-label">
+                        <span>Work</span>
+                    </div>
+                </button>
+            </li>
+            <li>
+                <button id="navBtn" type="button" @onclick="NavToggle" class="toggler-button menu-trigger @ButtonState" disabled="@ButtonDisableState" href="#">
+                    <div class="toggler-icon">
+                        <div class="toggler-icon--inner"></div>
+                    </div>
+                </button>
+            </li>
+            <li>
+                <button class="nav-item" type="button" id="about-btn" @onclick="AboutTrigger">
+                    <i class="las la-info-circle"></i>
+                    <div class="nav-label">
+                        <span>About Me</span>
+                    </div>
+                </button>
+            </li>
+            <li>
+                <button class="nav-item" type="button" id="contact-btn" @onclick="ContactTrigger">
+                    <i class="las la-comment"></i>
+                    <div class="nav-label">
+                        <span>Contact</span>
+                    </div>
+                </button>
+            </li>
+        </ul>
+    }
+    else
+    {
+        <ul class="nav-items" role="list">
+            <li>
+                <button id="navBtn" type="button" @onclick="NavToggle" class="toggler-button menu-trigger @ButtonState" disabled="@ButtonDisableState" href="#">
+                    <div class="toggler-icon">
+                        <div class="toggler-icon--inner"></div>
+                    </div>
+                </button>
+            </li>
+        </ul>
+    }
 </nav>
 <SideNav @ref="SideNav" NavbarAdvance="NavbarAdvance" NavbarRetract="NavbarRetract"></SideNav>
 
 @code {
     [Inject] IJSRuntime JSRuntime { get; set; }
+    [Inject] NavigationManager NavigationManager { get; set; }
 
     IJSObjectReference AnimeJsModule;
 
     SideNav SideNav;
+
     string ButtonState = "";
-    bool ButtonDisableState = false;
+    bool ButtonDisableState;
     string NavState = "";
+    bool IsHome = true;
 
     protected async override Task OnInitializedAsync()
     {
+        NavigationManager.LocationChanged += CheckIfHome;
+
+        CheckIfHome(null, null);
+
         AnimeJsModule = await JSRuntime.InvokeAsync<IJSObjectReference>(
-                "import", "./js/modules/animejsModule.js");
+                              "import", "./js/modules/animejsModule.js");
+    }
+
+    private void CheckIfHome(object sender, LocationChangedEventArgs eventArgs)
+    {
+        IsHome = NavigationManager.ToBaseRelativePath(NavigationManager.Uri) == "";
+        StateHasChanged();
     }
 
     private void NavToggle()
@@ -107,6 +135,7 @@
 
     public async ValueTask DisposeAsync()
     {
+        NavigationManager.LocationChanged -= CheckIfHome;
         await AnimeJsModule.DisposeAsync();
     }
 }

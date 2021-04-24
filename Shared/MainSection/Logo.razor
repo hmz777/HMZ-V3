@@ -1,36 +1,56 @@
-﻿@if (Clickable)
+﻿@if (IsHome)
 {
-    @if (Size == "big")
-    {
-        <a @onclick="() => HomeClicked.InvokeAsync()" class="logo logo--big" href="/">
-            <span>HMZ</span>
-        </a>
-    }
-    else
-    {
-        <a @onclick="() => HomeClicked.InvokeAsync()" class="logo logo--small" href="/">
-            <span>HMZ</span>
-        </a>
-    }
+    <a @onclick="TransitionToHome" class="logo logo--@Size" href="/">
+        <span>HMZ</span>
+    </a>
 }
 else
 {
-    @if (Size == "big")
-    {
-        <span class="logo logo--big">
-            <span>HMZ</span>
-        </span>
-    }
-    else
-    {
-        <span class="logo logo--small">
-            <span>HMZ</span>
-        </span>
-    }
+    <a class="logo logo--@Size" href="/">
+        <span>HMZ</span>
+    </a>
 }
 
 @code {
     [Parameter] public string Size { get; set; }
-    [Parameter] public bool Clickable { get; set; }
-    [Parameter] public EventCallback HomeClicked { get; set; }
+
+    [Inject] NavigationManager NavigationManager { get; set; }
+    [Inject] IJSRuntime JSRuntime { get; set; }
+
+    IJSObjectReference AnimeJsModule;
+
+    bool IsHome = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        NavigationManager.LocationChanged += CheckIfHome;
+
+        CheckIfHome(null, null);
+
+        if (IsHome)
+        {
+            AnimeJsModule = await JSRuntime.InvokeAsync<IJSObjectReference>(
+                  "import", "./js/modules/animejsModule.js");
+        }
+
+        AnimeJsModule = await JSRuntime.InvokeAsync<IJSObjectReference>(
+          "import", "./js/modules/animejsModule.js");
+    }
+
+    private void CheckIfHome(object sender, LocationChangedEventArgs eventArgs)
+    {
+        IsHome = NavigationManager.ToBaseRelativePath(NavigationManager.Uri) == "";
+        StateHasChanged();
+    }
+
+    private async Task TransitionToHome()
+    {
+        await AnimeJsModule.InvokeVoidAsync("PageTransition", "home", true);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        NavigationManager.LocationChanged -= CheckIfHome;
+        await AnimeJsModule.DisposeAsync();
+    }
 } 
