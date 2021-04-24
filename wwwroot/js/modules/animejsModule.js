@@ -1,9 +1,6 @@
 ﻿var pageHistory = [];
 var currentPage = null;
 var home = {
-    first: document.querySelectorAll(".hero-intro .hero-card"),
-    second: document.querySelectorAll(".hero-intro .hero-card .text"),
-    third: document.querySelectorAll(".hero-list .hero-card"),
     options: {
         minDuration: 1000,
         maxDuration: 1200,
@@ -13,10 +10,10 @@ var home = {
         offset: '-=1700'
     }
 };
-var skills = { target: document.getElementById("skills"), delay: 500, duration: 1500, length: 0 };
-var work = { target: document.getElementById("work"), delay: 500, duration: 1500, length: 0 };
-var about = { target: document.getElementById("about"), delay: 500, duration: 1500, length: 0 };
-var contact = { target: document.getElementById("contact"), delay: 500, duration: 1500, length: 0 };
+var skills = { delay: 500, duration: 1500, length: 0 };
+var work = { delay: 500, duration: 1500, length: 0 };
+var about = { delay: 500, duration: 1500, length: 0 };
+var contact = { delay: 500, duration: 1500, length: 0 };
 var modalOptions = { width: 45, height: 38, xPosition: -60, yPosition: -1 };
 var animeInstances = {};
 
@@ -118,36 +115,42 @@ function WaitForAnimation(time) {
 
 function HomeTrigger(aniDirection = 'normal', alternative = false) {
     if (!alternative) {
+        WaitForAnimation(((home.maxDuration + home.maxDelay) * 3) + 400);
+
+        let first = document.querySelectorAll(".hero-intro .hero-card");
+        let second = document.querySelectorAll(".hero-intro .hero-card .text");
+        let third = document.querySelectorAll(".hero-list .hero-card");
+
         let StartAnimationObject = {
             first: {
-                targets: '.hero-list .hero-card',
+                targets: third,
                 translateX: [-700, 0],
                 translateY: [-1000, 0],
                 opacity: [0, 1],
                 scale: 0.6,
-                duration: function () { return anime.random(1200, 1800); },
-                delay: function () { return anime.random(0, 400); }
+                duration: function () { return anime.random(home.options.minDuration, home.options.maxDuration); },
+                delay: function () { return anime.random(home.options.minDelay, home.options.maxDelay); }
             },
             second: {
-                targets: '.hero-intro .hero-card',
+                targets: first,
                 translateX: [-1000, 0],
                 translateY: [-500, 0],
                 opacity: [0, 1],
                 scale: 0.6,
-                duration: function () { return anime.random(1200, 1800); },
-                delay: function () { return anime.random(0, 400); }
+                duration: function () { return anime.random(home.options.minDuration, home.options.maxDuration); },
+                delay: function () { return anime.random(home.options.minDelay, home.options.maxDelay); }
             },
             third: {
-                targets: '.hero-intro .hero-card',
+                targets: first,
                 borderRadius: 1 + "em",
                 scale: 1,
                 width: function (el, i, l) { if (i == 0) return 36 + "em"; if (i == 1) return 45 + "em"; if (i == 2) return 52 + "em"; },
                 height: 8 + 'em',
-                duration: function () { return anime.random(1200, 1800); },
-                delay: function () { return anime.random(0, 400); }
+                duration: function () { return anime.random(home.options.minDuration, home.options.maxDuration); },
+                delay: function () { return anime.random(home.options.minDelay, home.options.maxDelay); }
             },
             forth: {
-                targets: '.hero-intro .hero-card .text',
+                targets: second,
                 easing: 'linear',
                 opacity: 1,
                 duration: function () { return anime.random(200, 400); },
@@ -168,11 +171,9 @@ function HomeTrigger(aniDirection = 'normal', alternative = false) {
         }
 
         animeInstances.Home.play();
-
-        WaitForAnimation(((1800 + 400) * 3) + 450 + 500);
     }
     else {
-        WaitForAnimation(home.options.wait + 500);
+        WaitForAnimation(home.options.maxDuration);
 
         if (animeInstances.HomeReverse == null) {
             let target = document.querySelectorAll(".hero-intro .hero-card");
@@ -239,8 +240,6 @@ function SkillsTrigger(aniDirection = 'normal') {
         }
         animeInstances.Skills.play();
     }
-
-    console.log("Instance played");
 
     ToggleRippleEffectForActiveElement("skills", aniDirection);
 }
@@ -408,3 +407,14 @@ function ToggleRippleEffectForActiveElement(id, direction) {
         });
     }
 }
+
+//export function BackgroundAnimation() {
+//    anime({
+//        targets: '#Mountains polygon',
+//        loop: true,
+//        duration: 5000,
+//        points: function (e, i, j) {
+//            return `${anime.random(200, 500)} ${anime.random(50, 100)} ${anime.random(400, 1200)} ${anime.random(900, 1700)} ${anime.random(640, 950)} ${anime.random(850, 2500)}`;
+//        }
+//    });
+//}

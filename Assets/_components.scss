@@ -3,7 +3,7 @@
     position: absolute;
     top: 1em;
     z-index: 1;
-    left: $layout-padding;
+    left: $layout-padding + 4;
     background: $logo-primary;
     color: $logo-secondary;
     padding: .5em 2em;
