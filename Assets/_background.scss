@@ -1,7 +1,25 @@
-﻿#Mountains {
+﻿#shape-left {
     position: fixed;
     left: 0;
     top: 0;
-    width: 100%;
+    z-index: 2;
+}
+
+#shape-right {
+    position: fixed;
+    right: 0;
     bottom: 0;
+    z-index: 2;
+}
+
+#EyeContainer {
+    background: transparent;
+    overflow: hidden;
+}
+
+#eye {
+    position: fixed;
+    right: 2em;
+    bottom: 1em;
+    z-index: 1;
 }

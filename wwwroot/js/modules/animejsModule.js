@@ -15,6 +15,7 @@ var work = { delay: 500, duration: 1500, length: 0 };
 var about = { delay: 500, duration: 1500, length: 0 };
 var contact = { delay: 500, duration: 1500, length: 0 };
 var modalOptions = { width: 45, height: 38, xPosition: -60, yPosition: -1 };
+var background = { minRand: 500, maxRand: 3000 };
 var animeInstances = {};
 
 export function PageTransition(page = "home", alternative = false, direction = 'forwards') {
@@ -408,13 +409,87 @@ function ToggleRippleEffectForActiveElement(id, direction) {
     }
 }
 
-//export function BackgroundAnimation() {
-//    anime({
-//        targets: '#Mountains polygon',
-//        loop: true,
-//        duration: 5000,
-//        points: function (e, i, j) {
-//            return `${anime.random(200, 500)} ${anime.random(50, 100)} ${anime.random(400, 1200)} ${anime.random(900, 1700)} ${anime.random(640, 950)} ${anime.random(850, 2500)}`;
-//        }
+function RandomColor() {
+    return "#xxxxxx".replace(/x/g, y => (Math.random() * 16 | 0).toString(16));
+}
+
+export function BackgroundAnimation() {
+
+    //let path1 = anime.path('#path1');
+    //let path2 = anime.path('#path2');
+
+    //let path2 = document.getElementById("path2");
+
+    //let duration = 5000;
+
+    //anime({
+    //    targets: path2,
+    //    loop: true,
+    //    easing: 'easeInOutExpo',
+    //    direction: 'alternate',
+    //    duration: duration,
+    //    autoplay: false,
+    //});
+}
+
+export function InitEyeMovement() {
+
+    if (animeInstances.Eye == null) {
+        let target = document.getElementById('eye');
+
+        animeInstances.Eye = anime.timeline({ targets: target, easing: 'easeInOutCubic', autoplay: false });
+        let duration = 3000;
+
+        animeInstances.Eye.add({
+            translateX: [
+                { value: '-50em', duration: duration },
+                { value: '0', duration: duration }
+            ],
+            translateY: [
+                { value: '2em', duration: duration },
+                { value: '0', duration: duration }
+            ],
+            zIndex: [
+                { value: 1, round: true, duration: duration - 1000 },
+                { value: 2, round: true, duration: duration }
+            ]
+        });
+    }
+
+    animeInstances.Eye.play();
+
+    AnimateEye();
+}
+
+function AnimateEye() {
+
+    let defaultX = 35.757324;
+    let defaultY = 17.101318;
+    let x = anime.random(defaultX - 19, defaultX + 19);
+    let y = anime.random(defaultY - 11, defaultY + 11);
+
+    let animeTL = anime.timeline({
+        targets: '#InnerEye',
+        easing: 'easeInOutCubic',
+        loop: false,
+        duration: 3500,
+        complete: function () {
+            AnimateEye();
+        }
+    });
+
+    animeTL.add({
+        translateX: [defaultX, x],
+        translateY: [defaultY, y]
+    }).add({
+        translateX: [x, defaultX],
+        translateY: [y, defaultY]
+    });
+
+}
+
+//function EyeTracker() {
+//    document.addEventListener('mousemove', function (e) {
+
 //    });
 //}
