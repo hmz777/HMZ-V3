@@ -16,6 +16,7 @@ var about = { delay: 500, duration: 1500, length: 0 };
 var contact = { delay: 500, duration: 1500, length: 0 };
 var modalOptions = { width: 45, height: 38, xPosition: -60, yPosition: -1 };
 var background = { minRand: 500, maxRand: 3000 };
+var Eye = { x: 35.757324, y: 17.101318 };
 var animeInstances = {};
 
 export function PageTransition(page = "home", alternative = false, direction = 'forwards') {
@@ -458,38 +459,20 @@ export function InitEyeMovement() {
 
     animeInstances.Eye.play();
 
-    AnimateEye();
+    //AnimateEye();
+    EyeTracker();
 }
 
-function AnimateEye() {
+function EyeTracker() {
+    document.addEventListener('mousemove', function (e) {
+        let InnerEye = document.getElementById('InnerEye');
+        let Cords = InnerEye.getBoundingClientRect();
+        let workingCords = { x: e.clientX, y: e.clientY };
+        let test = { x: -20, y: -12 };
 
-    let defaultX = 35.757324;
-    let defaultY = 17.101318;
-    let x = anime.random(defaultX - 19, defaultX + 19);
-    let y = anime.random(defaultY - 11, defaultY + 11);
+        test.x += workingCords.x / 60;
+        test.y += workingCords.y / 52;
 
-    let animeTL = anime.timeline({
-        targets: '#InnerEye',
-        easing: 'easeInOutCubic',
-        loop: false,
-        duration: 3500,
-        complete: function () {
-            AnimateEye();
-        }
+        InnerEye.style.transform = 'translate(' + (Eye.x + test.x) + 'px,' + (Eye.y + test.y) + 'px)';
     });
-
-    animeTL.add({
-        translateX: [defaultX, x],
-        translateY: [defaultY, y]
-    }).add({
-        translateX: [x, defaultX],
-        translateY: [y, defaultY]
-    });
-
 }
-
-//function EyeTracker() {
-//    document.addEventListener('mousemove', function (e) {
-
-//    });
-//}

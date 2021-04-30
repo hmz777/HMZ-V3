@@ -89,12 +89,12 @@
         StateHasChanged();
     }
 
-    private void NavToggle()
+    private async Task NavToggle()
     {
         if (ButtonState == "")
         {
             NavbarRetract();
-            SideNav.OpenMenu();
+            await SideNav.OpenMenu();
             StateHasChanged();
         }
     }

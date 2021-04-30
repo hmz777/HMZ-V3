@@ -37,3 +37,11 @@
 .justify-content-between {
     justify-content: space-between;
 }
+
+.blur {
+    //animation: Blur .2s $main-easing alternate forwards;
+    transition: filter .3s ease-in-out;
+    -moz-filter: blur(15px);
+    -webkit-filter: blur(15px);
+    filter: blur(15px);
+}

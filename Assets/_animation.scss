@@ -46,3 +46,33 @@
         transform: rotate(360deg);
     }
 }
+
+@keyframes Blur {
+    from {
+        filter: blur(0);
+    }
+
+    to {
+        filter: blur(8px);
+    }
+}
+
+@-moz-keyframes Blur {
+    from {
+        -moz-filter: blur(0);
+    }
+
+    to {
+        -moz-filter: blur(8px);
+    }
+}
+
+@-webkit-keyframes Blur {
+    from {
+        -webkit-filter: blur(0);
+    }
+
+    to {
+        -webkit-filter: blur(8px);
+    }
+}

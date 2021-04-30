@@ -69,15 +69,19 @@
 
             await NavbarAdvance.InvokeAsync();
 
+            await NavbarModule.InvokeVoidAsync("ToggleBackBlur");
+
             StateHasChanged();
         }
     }
 
-    public void OpenMenu()
+    public async Task OpenMenu()
     {
         if (!IsMenuOpen())
         {
             State = "is-open";
+
+            await NavbarModule.InvokeVoidAsync("ToggleBackBlur");
 
             StateHasChanged();
         }

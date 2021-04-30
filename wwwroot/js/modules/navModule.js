@@ -27,6 +27,17 @@ export function InitNavbarEventListeners() {
     RetractNavbar();
 }
 
+export function ToggleBackBlur() {
+    let main = document.querySelector('main');
+
+    if (main.classList.contains('blur')) {
+        main.classList.remove('blur');
+    }
+    else {
+        main.classList.add('blur');
+    }
+}
+
 function IsNavRefPassed() {
     return sideNavRef != null;
 }
