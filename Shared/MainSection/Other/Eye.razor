@@ -1,0 +1,82 @@
+﻿@using System.Timers
+@implements IAsyncDisposable
+
+<div id="eye">
+    @if (!string.IsNullOrEmpty(CurrentThought))
+    {
+        <span class="tooltip">@CurrentThought</span>
+    }
+    <svg width="120px" height="120px" viewBox="0 0 162 162" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+        <g id="EyeBall" transform="translate(11 1)">
+            <g id="Sphere">
+                <path d="M150 74.995C150 33.7453 116.475 0 75.0094 0C75.0062 0 75.0032 0 75 0C74.9982 0 74.9965 0 74.9947 0C33.7494 0 0 33.5212 0 74.9906C0 74.9939 0 74.9968 0 75C0 75.0018 0 75.0035 0 75.0053C0 116.249 33.5197 150 74.9906 150C74.9939 150 74.9968 150 75 150C75.0018 150 75.0035 150 75.0053 150C116.253 150 150 116.476 150 75.0091C150 75.0061 150 75.0029 150 75C150 74.9982 150 74.9968 150 74.995L150 74.995Z" id="Shape" fill="#240090" fill-rule="evenodd" stroke="none" />
+                <path d="M0.00527501 150C41.2532 150 75 116.476 75 75.0091C75 75.0061 75 75.0029 75 75C75 74.9982 75 74.9968 75 74.995C75 33.7453 41.4753 0 0.00937879 0C0.00616014 0 0.00322759 0 0 0L0 150C0.00176132 150 0.00351369 150 0.00527501 150L0.00527501 150Z" transform="translate(75 0)" id="Shape" fill="#0C0032" fill-rule="evenodd" stroke="none" />
+                <path d="M150 39.1154C150 16.3128 114.069 0.00293255 75 0C38.0244 0.00175908 0 15.3571 0 39.1248C0 39.14 0 39.1315 0 39.1456C0 66.3366 46.2832 78.2584 75 78.2607C112.241 78.2587 150 62.7765 150 39.1357C150 39.1225 150 39.1272 150 39.1154L150 39.1154Z" transform="translate(0 35.86963)" id="Shape" fill="#3500D3" fill-rule="evenodd" stroke="none" />
+                <path d="M0 0L0 78.2607C37.2413 78.2587 75 62.7765 75 39.1357C75 39.1339 75 39.1324 75 39.1304C75 39.1286 75 39.1272 75 39.1254C75 39.1187 74.9997 39.1113 74.9997 39.1046C74.9883 16.3078 39.063 0.00293031 0 0L0 0Z" transform="translate(75 35.86963)" id="Shape" fill="#190061" fill-rule="evenodd" stroke="none" />
+            </g>
+            <g id="FullEye" transform="translate(17.97705 35.551025)">
+                <g id="OuterEye">
+                    <path d="M110.193 36.4378C101.082 57.8609 79.8451 72.8797 55.0964 72.8797C30.3476 72.8797 9.11053 57.8609 0 36.4378C9.11053 15.0188 30.3514 0 55.0964 0C79.8413 0 101.082 15.0188 110.193 36.4378L110.193 36.4378Z" transform="translate(2.9038084 2.9042966)" id="Shape" fill="#FFFFFF" fill-rule="evenodd" stroke="none" />
+                    <path d="M115.768 38.2055C105.897 14.9968 83.2212 0 58 0C32.7788 0 10.1033 14.9964 0.231773 38.2055C-0.0772578 38.9318 -0.0772578 39.7522 0.231773 40.4786C10.1026 63.6899 32.7784 78.6879 58 78.6879C83.2223 78.6879 105.898 63.6899 115.768 40.4786C116.077 39.7522 116.077 38.9318 115.768 38.2055L115.768 38.2055ZM57.9998 72.8801C35.5262 72.8801 15.2799 59.7574 6.07373 39.3423C15.2801 18.9295 35.5269 5.80786 57.9998 5.80786C80.4732 5.80786 100.72 18.9295 109.926 39.3418C100.72 59.7567 80.4734 72.8801 57.9998 72.8801L57.9998 72.8801Z" id="Shape" fill="#282828" fill-rule="evenodd" stroke="none" />
+                </g>
+                <g id="InnerEye" transform="translate(35.757324 17.101318)">
+                    <path d="M0 19.3387C0 8.65823 8.65823 0 19.3387 0C30.0192 0 38.6774 8.65823 38.6774 19.3387C38.6774 30.0192 30.0192 38.6774 19.3387 38.6774C8.65823 38.6774 0 30.0192 0 19.3387Z" transform="translate(2.9042966 2.9042966)" id="Circle" fill="#3500D3" fill-rule="evenodd" stroke="none" />
+                    <path d="M22.2425 0C9.97781 0 0 9.97804 0 22.2425C0 34.507 9.97803 44.4851 22.2425 44.4851C34.507 44.4851 44.4851 34.5073 44.4851 22.2425C44.4851 9.97781 34.507 0 22.2425 0L22.2425 0ZM22.2425 38.678C13.1804 38.678 5.80762 31.3052 5.80762 22.2432C5.80762 13.1811 13.1804 5.80835 22.2425 5.80835C31.3045 5.80835 38.6773 13.1811 38.6773 22.2432C38.6773 31.3052 31.3045 38.678 22.2425 38.678L22.2425 38.678Z" id="Shape" fill="#282828" fill-rule="evenodd" stroke="none" />
+                    <path d="M11.8091 0C5.29794 0 0 5.29748 0 11.8091C0 13.4127 1.29979 14.713 2.90385 14.713C4.50792 14.713 5.8077 13.4127 5.8077 11.8091C5.8077 8.49994 8.49972 5.8077 11.8091 5.8077C13.4132 5.8077 14.713 4.50746 14.713 2.90385C14.713 1.29979 13.4127 0 11.8091 0L11.8091 0Z" transform="translate(10.433593 10.433837)" id="Shape" fill="#282828" fill-rule="evenodd" stroke="none" />
+                </g>
+            </g>
+        </g>
+    </svg>
+</div>
+
+
+@code {
+    [Inject] IJSRuntime JSRuntime { get; set; }
+    [Inject] HttpClient HttpClient { get; set; }
+
+    IJSObjectReference AnimeJsModule;
+    Timer Timer;
+    List<string> Thoughts;
+    string CurrentThought;
+    bool EyeInitialized;
+
+    protected async override Task OnInitializedAsync()
+    {
+        Thoughts = await HttpClient.GetFromJsonAsync<List<string>>("/eye_thoughts.json");
+        AnimeJsModule = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./js/modules/animejsModule.js");
+    }
+
+    protected async override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            if (!EyeInitialized)
+            {
+                await AnimeJsModule.InvokeVoidAsync("InitEyeMovement");
+                EyeInitialized = true;
+            }
+
+            if (Thoughts != null && Timer == null)
+            {
+                Timer = new Timer(10000);
+                Timer.Elapsed += TimerHandler;
+                Timer.Enabled = true;
+            }
+        }
+    }
+
+    private void TimerHandler(object sender, ElapsedEventArgs elapsedEventArgs)
+    {
+        CurrentThought = Thoughts[new Random().Next(Thoughts.Count - 1)];
+
+        Console.WriteLine("Handler triggered with: " + CurrentThought);
+
+        StateHasChanged();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        Timer.Dispose();
+        await AnimeJsModule.DisposeAsync();
+    }
+}
